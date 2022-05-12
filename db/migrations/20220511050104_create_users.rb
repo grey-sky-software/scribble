@@ -3,7 +3,7 @@ Hanami::Model.migration do
     execute 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp"'
 
     create_table :users do
-      column :id, 'uuid', primary_key: true
+      primary_key :id, 'uuid', null: false, default: Hanami::Model::Sql.function(:uuid_generate_v4)
       column :email, String, unique: true, index: true, null: false
       column :pw_hash, String, null: false
       column :pw_reset_token, String, null: true
@@ -15,5 +15,6 @@ Hanami::Model.migration do
 
   down do
     drop_table :users
+    execute 'DROP EXTENSION IF EXISTS "uuid-ossp"'
   end
 end
