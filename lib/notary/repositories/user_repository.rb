@@ -1,7 +1,7 @@
+require 'singleton'
+
 class UserRepository < Hanami::Repository
-  def self.instance
-    @repo ||= UserRepository.new
-  end
+  include Singleton
 
   def self.method_missing(method, *args)
     if instance.respond_to?(method)
