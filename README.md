@@ -5,25 +5,43 @@ Use me to take notes.
 ## Setup
 
 How to run tests:
-
 ```
 % bundle exec rake
 ```
 
 How to run the development console:
-
 ```
 % bundle exec hanami console
 ```
 
 How to run the development server:
-
 ```
 % bundle exec hanami server
 ```
 
-How to prepare (create and migrate) DB for `development` and `test` environments:
+### Database Management
 
+Running pending migrations:
+```
+% bundle exec rake db:migrate
+```
+
+Re-create the database from scratch and run any pending migrations:
+```
+% bundle exec rake db:prepare
+```
+
+Re-create the database from scratch without running any pending migrations:
+```
+% bundle exec rake db:reset
+```
+
+Load the schema into an existing database:
+```
+% bundle exec rake db:load
+```
+
+How to prepare (create and migrate) DB for `development` and `test` environments:
 ```
 % bundle exec hanami db prepare
 
