@@ -69,6 +69,18 @@ CREATE TABLE public.note_tags (
 
 
 --
+-- Name: note_attachments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.note_attachments (
+    note_id uuid NOT NULL,
+    file_path text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -98,6 +110,14 @@ CREATE TABLE public.users (
 
 ALTER TABLE ONLY public.note_tags
     ADD CONSTRAINT note_tags_pkey PRIMARY KEY (note_id, user_id, value);
+
+
+--
+-- Name: note_attachments note_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.note_attachments
+    ADD CONSTRAINT note_attachments_pkey PRIMARY KEY (note_id, file_path);
 
 
 --
@@ -136,4 +156,5 @@ CREATE INDEX users_email_index ON public.users USING btree (email);
 --
 
 INSERT INTO public.schema_migrations (filename) VALUES ('20220511050104_create_users.rb');
+INSERT INTO public.schema_migrations (filename) VALUES ('20220516035300_create_note_attachments.rb');
 INSERT INTO public.schema_migrations (filename) VALUES ('20220517045256_create_note_tags.rb');

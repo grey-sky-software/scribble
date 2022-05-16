@@ -14,27 +14,6 @@ Install the required dependencies:
 % bundle install
 ```
 
-## Testing
-
-How to run tests:
-```
-% bundle exec rake
-```
-
-## Dev Console
-
-How to run the development console:
-```
-% bundle exec hanami console
-```
-
-## Dev Server
-
-How to run the development server:
-```
-% bundle exec hanami server
-```
-
 ## Database Management
 
 Running pending migrations:
@@ -62,6 +41,27 @@ How to prepare (create and migrate) DB for `development` and `test` environments
 % bundle exec hanami db prepare
 
 % HANAMI_ENV=test bundle exec hanami db prepare
+```
+
+## Dev Console
+
+How to run the development console:
+```
+% bundle exec hanami console
+```
+
+## Dev Server
+
+How to run the development server:
+```
+% bundle exec hanami server
+```
+
+## Testing
+
+How to run tests:
+```
+% bundle exec rake
 ```
 
 ## Additional Resources
