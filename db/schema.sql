@@ -74,7 +74,7 @@ CREATE TABLE public.note_tags (
 
 CREATE TABLE public.note_attachments (
     note_id uuid NOT NULL,
-    file_path text NOT NULL,
+    filename text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -117,7 +117,7 @@ ALTER TABLE ONLY public.note_tags
 --
 
 ALTER TABLE ONLY public.note_attachments
-    ADD CONSTRAINT note_attachments_pkey PRIMARY KEY (note_id, file_path);
+    ADD CONSTRAINT note_attachments_pkey PRIMARY KEY (note_id, filename);
 
 
 --

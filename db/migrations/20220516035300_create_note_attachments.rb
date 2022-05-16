@@ -4,16 +4,15 @@ Hanami::Model.migration do
 
     create_table :note_attachments do
       column :note_id, 'uuid', null: false
-      column :file_path, String, null: false
+      column :filename, String, null: false
       column :created_at, DateTime, null: false
       column :updated_at, DateTime, null: false
     end
 
-    execute 'ALTER TABLE note_attachments ADD CONSTRAINT note_attachments_pkey PRIMARY KEY (note_id, file_path)'
+    execute 'ALTER TABLE note_attachments ADD CONSTRAINT note_attachments_pkey PRIMARY KEY (note_id, filename)'
   end
 
   down do
     drop_table :note_attachments
-    execute 'DROP EXTENSION IF EXISTS "uuid-ossp"'
   end
 end
