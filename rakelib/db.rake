@@ -1,6 +1,8 @@
 require 'dotenv/load' unless ENV['HANAMI_ENV'] == 'production'
 require 'pathname'
 
+SCHEMA_FILE_PATH = Pathname.new('db/schema.sql').to_s
+
 namespace :db do
   desc 'Loads the database from the db/schema.sql file'
   task :load do
@@ -9,11 +11,15 @@ namespace :db do
 
   desc 'Run any pending migrations on the database and dump the schema'
   task :migrate do
+    # The schema.sql file seems to not get updated when you make changes to a migration, so
+    # I've found the safest thing is to just delete it and re-create it. I'm sure there's a
+    # better way we can find.
+    File.delete(SCHEMA_FILE_PATH) if File.exist?(SCHEMA_FILE_PATH)
     system('bundle exec hanami db migrate')
     system("pg_dump -s --no-owner --no-privileges --if-exists --clean --create #{ENV.fetch('DATABASE_URL')} > db/schema.sql")
 
-    f = File.open(Pathname.new('db/schema.sql').to_s, 'a')
-    Pathname.new('db/migrations').entries.each do |name|
+    f = File.open(SCHEMA_FILE_PATH, 'a')
+    Pathname.new('db/migrations').entries.sort.each do |name|
       unless name.directory?
         f.write("INSERT INTO public.schema_migrations (filename) VALUES ('#{name}');\n")
       end
