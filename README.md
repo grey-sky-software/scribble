@@ -1,4 +1,4 @@
-# Notary
+# Scribble
 
 Use me to take notes.
 

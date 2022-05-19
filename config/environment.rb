@@ -1,7 +1,7 @@
 require 'bundler/setup'
 require 'hanami/setup'
 require 'hanami/model'
-require_relative '../lib/notary'
+require_relative '../lib/scribble'
 require_relative '../apps/web/application'
 
 Hanami.configure do
@@ -14,9 +14,9 @@ Hanami.configure do
     # Available options:
     #
     #  * SQL adapter
-    #    adapter :sql, 'sqlite://db/notary_development.sqlite3'
-    #    adapter :sql, 'postgresql://localhost/notary_development'
-    #    adapter :sql, 'mysql://localhost/notary_development'
+    #    adapter :sql, 'sqlite://db/scribble_development.sqlite3'
+    #    adapter :sql, 'postgresql://localhost/scribble_development'
+    #    adapter :sql, 'mysql://localhost/scribble_development'
     #
     adapter :sql, ENV.fetch('DATABASE_URL')
 
@@ -28,7 +28,7 @@ Hanami.configure do
   end
 
   mailer do
-    root 'lib/notary/mailers'
+    root 'lib/scribble/mailers'
 
     # See https://guides.hanamirb.org/mailers/delivery
     delivery :test
