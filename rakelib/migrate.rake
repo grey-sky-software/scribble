@@ -1,4 +1,4 @@
-require 'dotenv/load'
+require 'dotenv/load' unless ENV['HANAMI_ENV'] == 'production'
 require 'pathname'
 
 namespace :db do
