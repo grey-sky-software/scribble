@@ -1,4 +1,4 @@
-require './lib/notary/repositories/note_attachment_repository'
+require './lib/scribble/repositories/note_attachment_repository'
 
 class NoteAttachment < Hanami::Entity
   # Allows us to call all of the repository methods directly on the entity for convenience,
