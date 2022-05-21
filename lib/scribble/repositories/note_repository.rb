@@ -1,3 +1,5 @@
+require 'singleton'
+
 class NoteRepository < Hanami::Repository
   include Singleton
 
