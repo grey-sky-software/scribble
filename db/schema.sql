@@ -56,6 +56,18 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: note_attachments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.note_attachments (
+    note_id uuid NOT NULL,
+    filename text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: note_tags; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -63,18 +75,6 @@ CREATE TABLE public.note_tags (
     note_id uuid NOT NULL,
     user_id uuid NOT NULL,
     value text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: note_attachments; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.note_attachments (
-    note_id uuid NOT NULL,
-    filename text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -105,19 +105,19 @@ CREATE TABLE public.users (
 
 
 --
--- Name: note_tags note_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.note_tags
-    ADD CONSTRAINT note_tags_pkey PRIMARY KEY (note_id, user_id, value);
-
-
---
 -- Name: note_attachments note_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.note_attachments
     ADD CONSTRAINT note_attachments_pkey PRIMARY KEY (note_id, filename);
+
+
+--
+-- Name: note_tags note_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.note_tags
+    ADD CONSTRAINT note_tags_pkey PRIMARY KEY (note_id, user_id, value);
 
 
 --
