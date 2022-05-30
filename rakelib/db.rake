@@ -16,7 +16,7 @@ namespace :db do
     # better way we can find.
     File.delete(SCHEMA_FILE_PATH) if File.exist?(SCHEMA_FILE_PATH)
     system('bundle exec hanami db migrate')
-    system("pg_dump -s --no-owner --no-privileges --if-exists --clean --create #{ENV.fetch('DATABASE_URL')} > db/schema.sql")
+    system("pg_dump -s --no-owner --no-privileges --if-exists --clean --create --encoding=UTF8 #{ENV.fetch('DATABASE_URL')} > db/schema.sql")
 
     f = File.open(SCHEMA_FILE_PATH, 'a')
     Pathname.new('db/migrations').entries.sort.each do |name|

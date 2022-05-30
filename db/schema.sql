@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.2
--- Dumped by pg_dump version 14.2
+-- Dumped from database version 14.3
+-- Dumped by pg_dump version 14.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,7 +21,7 @@ DROP DATABASE IF EXISTS scribble;
 -- Name: scribble; Type: DATABASE; Schema: -; Owner: -
 --
 
-CREATE DATABASE scribble WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'C';
+CREATE DATABASE scribble WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'en_US';
 
 
 \connect scribble
