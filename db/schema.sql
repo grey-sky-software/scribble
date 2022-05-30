@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.2
--- Dumped by pg_dump version 14.2
+-- Dumped from database version 14.3
+-- Dumped by pg_dump version 14.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,7 +21,7 @@ DROP DATABASE IF EXISTS scribble;
 -- Name: scribble; Type: DATABASE; Schema: -; Owner: -
 --
 
-CREATE DATABASE scribble WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'C';
+CREATE DATABASE scribble WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'en_US';
 
 
 \connect scribble
@@ -51,6 +51,16 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
 COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
 
 
+--
+-- Name: note_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.note_type AS ENUM (
+    'basic',
+    'list'
+);
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -75,6 +85,20 @@ CREATE TABLE public.note_tags (
     note_id uuid NOT NULL,
     user_id uuid NOT NULL,
     value text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: notes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.notes (
+    id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
+    user_id uuid NOT NULL,
+    body text NOT NULL,
+    type public.note_type NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -121,6 +145,14 @@ ALTER TABLE ONLY public.note_tags
 
 
 --
+-- Name: notes notes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notes
+    ADD CONSTRAINT notes_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -155,6 +187,7 @@ CREATE INDEX users_email_index ON public.users USING btree (email);
 -- PostgreSQL database dump complete
 --
 
+INSERT INTO public.schema_migrations (filename) VALUES ('20220511011526_create_notes.rb');
 INSERT INTO public.schema_migrations (filename) VALUES ('20220511050104_create_users.rb');
 INSERT INTO public.schema_migrations (filename) VALUES ('20220516035300_create_note_attachments.rb');
 INSERT INTO public.schema_migrations (filename) VALUES ('20220517045256_create_note_tags.rb');

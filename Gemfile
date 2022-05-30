@@ -8,10 +8,13 @@ gem 'pg'
 gem 'rack'
 
 group :development do
+  gem 'babel-transpiler'
   # Code reloading
   # See: https://guides.hanamirb.org/projects/code-reloading
-  gem 'shotgun', platforms: :ruby
   gem 'hanami-webconsole'
+  gem 'sassc'
+  gem 'shotgun', platforms: :ruby
+  gem 'uglifier'
 end
 
 group :test, :development do
