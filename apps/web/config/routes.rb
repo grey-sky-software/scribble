@@ -1,6 +1,5 @@
-# Configure your routes here
-# See: https://guides.hanamirb.org/routing/overview
-#
-# Example:
-# get '/hello', to: ->(env) { [200, {}, ['Hello from Hanami!']] }
+# See: https://guides.hanamirb.org/routing/overview for router docs
+
 get '/', to: 'dashboard#index'
+
+get '/notes', to: 'notes#index'
