@@ -3,7 +3,7 @@ require 'singleton'
 class NoteAttachmentRepository < Hanami::Repository
   include Singleton
 
-  assocications do
+  associations do
     belongs_to :note
   end
 

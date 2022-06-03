@@ -5,7 +5,7 @@ class NoteTagRepository < Hanami::Repository
   
   associations do
     belongs_to :user
-    beolongs_to :note
+    belongs_to :note
   end
 
   def self.method_missing(method, *args)
