@@ -1,0 +1,11 @@
+<div>
+  Look at all them goddamn notes
+</div>
+
+<div>
+  <% if notes.nil? %>
+    Notes must come from local storage - no authenticated user to grab notes of
+  <% else %>
+    Notes will be provided by the server - user is authenticated
+  <% end %>
+</div>

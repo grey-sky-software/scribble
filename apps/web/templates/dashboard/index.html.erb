@@ -1,3 +1,11 @@
 <div>
-  This is a lovely form
+  This is a lovely form.
+</div>
+
+<div>
+  <% if authenticated? %>
+    User is authenticated
+  <% else %>
+    User is not authenticated
+  <% end %>
 </div>
