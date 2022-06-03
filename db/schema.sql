@@ -16,15 +16,15 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-DROP DATABASE IF EXISTS scribble_development;
+DROP DATABASE IF EXISTS scribble;
 --
--- Name: scribble_development; Type: DATABASE; Schema: -; Owner: -
+-- Name: scribble; Type: DATABASE; Schema: -; Owner: -
 --
 
-CREATE DATABASE scribble_development WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'C';
+CREATE DATABASE scribble WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'en_US';
 
 
-\connect scribble_development
+\connect scribble
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
