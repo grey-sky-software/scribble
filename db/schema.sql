@@ -184,6 +184,38 @@ CREATE INDEX users_email_index ON public.users USING btree (email);
 
 
 --
+-- Name: note_attachments note_attatchments_fk_to_notes; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.note_attachments
+    ADD CONSTRAINT note_attatchments_fk_to_notes FOREIGN KEY (note_id) REFERENCES public.notes(id);
+
+
+--
+-- Name: note_tags note_tags_fk_to_notes; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.note_tags
+    ADD CONSTRAINT note_tags_fk_to_notes FOREIGN KEY (note_id) REFERENCES public.notes(id);
+
+
+--
+-- Name: note_tags note_tags_fk_to_users; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.note_tags
+    ADD CONSTRAINT note_tags_fk_to_users FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: notes notes_fk_to_users; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notes
+    ADD CONSTRAINT notes_fk_to_users FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -191,3 +223,4 @@ INSERT INTO public.schema_migrations (filename) VALUES ('20220511011526_create_n
 INSERT INTO public.schema_migrations (filename) VALUES ('20220511050104_create_users.rb');
 INSERT INTO public.schema_migrations (filename) VALUES ('20220516035300_create_note_attachments.rb');
 INSERT INTO public.schema_migrations (filename) VALUES ('20220517045256_create_note_tags.rb');
+INSERT INTO public.schema_migrations (filename) VALUES ('20220530223842_define_foreign_key_constraints_for_note_tables.rb');
