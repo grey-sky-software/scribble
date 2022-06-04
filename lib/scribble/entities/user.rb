@@ -6,4 +6,8 @@ class User < Hanami::Entity
   def self.method_missing(method, *args)
     UserRepository.send(method, *args)
   end
+
+  def notes
+    UserRepository.notes_for(id: id)
+  end
 end

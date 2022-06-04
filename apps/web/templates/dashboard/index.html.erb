@@ -1,5 +1,5 @@
 <div>
-  This is a lovely form.
+  <a href='<%= routes.note_list_path %>'>Note List</a>
 </div>
 
 <div>
@@ -9,3 +9,14 @@
     User is not authenticated
   <% end %>
 </div>
+
+<form action='/notes' method='POST'>
+  <textarea
+    id='body'
+    name='body'
+    placeholder='Note here pls'
+    rows='10'
+    cols='40'></textarea>
+  <br>
+  <button type='submit'>Submit</button>
+</form>

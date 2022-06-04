@@ -1,4 +1,8 @@
 <div>
+  <a href='<%= routes.root_path %>'>Dashboard</a>
+</div>
+
+<div>
   Look at all them goddamn notes
 </div>
 
@@ -6,6 +10,12 @@
   <% if notes.nil? %>
     Notes must come from local storage - no authenticated user to grab notes of
   <% else %>
-    Notes will be provided by the server - user is authenticated
+    <ul>
+    <% notes.each do |note| %>
+      <li>
+        <%= note.body %> (<span style='color: green;'><%= note.created_at.strftime('%Y-%m-%d %H:%M %p') %></span>)
+      </li>
+    <% end %>
+    </ul>
   <% end %>
 </div>

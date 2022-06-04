@@ -51,16 +51,6 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
 COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
 
 
---
--- Name: note_type; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.note_type AS ENUM (
-    'basic',
-    'list'
-);
-
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -97,8 +87,7 @@ CREATE TABLE public.note_tags (
 CREATE TABLE public.notes (
     id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     user_id uuid NOT NULL,
-    body text NOT NULL,
-    type public.note_type NOT NULL,
+    body jsonb NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
