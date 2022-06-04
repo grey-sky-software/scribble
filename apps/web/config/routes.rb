@@ -2,5 +2,5 @@
 
 root to: 'dashboard#index'
 
-get '/notes', to: 'notes#index', as: :note_list
-post '/notes', to: 'notes#create', as: :create_note
+get '/notes', to: 'notes#index', as: :notes_index
+post '/notes', to: 'notes#create', as: :notes_create
