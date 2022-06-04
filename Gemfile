@@ -12,6 +12,8 @@ group :development do
   # Code reloading
   # See: https://guides.hanamirb.org/projects/code-reloading
   gem 'hanami-webconsole'
+  gem 'reek'
+  gem 'rubocop-airbnb'
   gem 'sassc'
   gem 'shotgun', platforms: :ruby
   gem 'uglifier'
@@ -19,6 +21,7 @@ end
 
 group :test, :development do
   gem 'dotenv', '~> 2.4'
+  gem 'pry'
 end
 
 group :test do
