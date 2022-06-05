@@ -3,7 +3,7 @@
 name: Run Lint
 
 env:
-  RUBY_VERSION: '2.7.5' # set up a fallback before reading the .ruby-version file
+  RUBY_VERSION: '2.7.4' # set up a fallback before reading the .ruby-version file
 
 on:
   push:
