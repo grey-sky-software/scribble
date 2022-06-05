@@ -82,9 +82,19 @@ This will load the server at [http://localhost:2300](http://localhost:2300)
 
 ## Linting
 
-How to run linter:
+Running all linters:
 ```
-% bundle exec reek
+% bundle exec rake lint
+```
+
+Running just the style linter:
+```
+% bundle exec rake lint:style
+```
+
+Running just the code smell linter:
+```
+% bundle exec rake lint:smell
 ```
 
 <br>

@@ -13,6 +13,7 @@ group :development do
   # See: https://guides.hanamirb.org/projects/code-reloading
   gem 'hanami-webconsole'
   gem 'reek'
+  gem 'rubocop'
   gem 'rubocop-airbnb'
   gem 'sassc'
   gem 'shotgun', platforms: :ruby
