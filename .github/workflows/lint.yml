@@ -24,7 +24,7 @@ jobs:
     steps:
       # STEP 3 - INSTALL DEPENDENCIES
       - name: readdir
-        run: ls -la
+        run: cd ${{ github.workspace }} && ls -la
 
       # STEP 1 - DETERMINE RUBY VERSION
       - name: Read Ruby version
