@@ -6,9 +6,10 @@ detectors:
       - "Scribble" # The module defined in lib/scribble.rb
 
 directories:
-  "spec":
-    IrresponsibleModule:
-      enabled: false
   "lib/scribble/repositories":
     ManualDispatch:
+      enabled: false
+
+  "spec":
+    IrresponsibleModule:
       enabled: false
