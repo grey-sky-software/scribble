@@ -11,12 +11,26 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/scribble
+
 permissions:
   contents: read
 
 jobs:
   specs:
     runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: scribble
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       # STEP 1 - CHECKOUT REPO
