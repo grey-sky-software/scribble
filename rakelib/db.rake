@@ -16,7 +16,8 @@ namespace :db do
     # better way we can find.
     File.delete(SCHEMA_FILE_PATH) if File.exist?(SCHEMA_FILE_PATH)
     system('bundle exec hanami db migrate')
-    system("pg_dump -s --no-owner --no-privileges --if-exists --clean --create --encoding=UTF8 #{ENV.fetch('DATABASE_URL')} > db/schema.sql")
+    system('pg_dump -s --no-owner --no-privileges --if-exists --clean '\
+           "--create --encoding=UTF8 #{ENV.fetch('DATABASE_URL')} > db/schema.sql")
 
     f = File.open(SCHEMA_FILE_PATH, 'a')
     Pathname.new('db/migrations').entries.sort.each do |name|
@@ -27,13 +28,15 @@ namespace :db do
     f.close
   end
 
-  desc 'Prepares the database for use by dropping the current database, re-creating it, loading the schema.sql, and running any migrations'
+  desc 'Prepares the database for use by dropping the current database, '\
+       're-creating it, loading the schema.sql, and running any migrations'
   task :prepare do
     system('bundle exec rake db:reset')
     system('bundle exec rake db:migrate')
   end
 
-  desc 'Resets the database by dropping the current database, re-creating it, and loading the schema.sql'
+  desc 'Resets the database by dropping the current database, '\
+       're-creating it, and loading the schema.sql'
   task :reset do
     system('bundle exec hanami db drop')
     system('bundle exec hanami db create')

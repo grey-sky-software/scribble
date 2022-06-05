@@ -10,7 +10,8 @@ Hanami::Model.migration do
       column :updated_at, DateTime, null: false
     end
 
-    execute 'ALTER TABLE note_tags ADD CONSTRAINT note_tags_pkey PRIMARY KEY (note_id, user_id, value)'
+    execute 'ALTER TABLE note_tags ADD CONSTRAINT '\
+            'note_tags_pkey PRIMARY KEY (note_id, user_id, value)'
   end
 
   down do

@@ -2,7 +2,7 @@ require 'singleton'
 
 class NoteTagRepository < Hanami::Repository
   include Singleton
-  
+
   associations do
     belongs_to :user
     belongs_to :note
