@@ -45,10 +45,10 @@ jobs:
           # setting this to "true" also runs "bundle install"
           bundler-cache: true
           
-      # STEP 4 - SETUP DB
+      # STEP 3 - SETUP DB
       - name: Setup Database
         run: bundle exec rake db:prepare
 
-      # STEP 3 - RUN SPECS
+      # STEP 4 - RUN SPECS
       - name: Run specs
         run: bundle exec rake
