@@ -22,34 +22,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # STEP 3 - INSTALL DEPENDENCIES
-      - name: readdir
-        run: cd ${{ github.workspace }} && ls -la
-
-      # STEP 1 - DETERMINE RUBY VERSION
+      # STEP 1 - CHECKOUT REPO
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+    
+      # STEP 2 - DETERMINE RUBY VERSION
       - name: Read Ruby version
         id: version
         uses: juliangruber/read-file-action@v1
         with:
           path: ${{ github.workspace }}/.ruby-version
-      - name: Echo .ruby-version
-        run: echo "${{ steps.version.outputs.content }}" >> $RUBY_VERSION
+      - name: Save Ruby version to env var
+        run: echo "${{ steps.version.outputs.content }} | cut -d'-' -f 2" >> $RUBY_VERSION
 
-      # STEP 2 - INSTALL RUBY
-      - uses: actions/checkout@v3
-      - name: Setup Ruby
-      # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
-      # change this to (see https://github.com/ruby/setup-ruby#versioning):
-      # uses: ruby/setup-ruby@v1
+      # STEP 3 - INSTALL RUBY
+      - name: Install Ruby
         uses: ruby/setup-ruby@2b019609e2b0f1ea1a2bc8ca11cb82ab46ada124
         with:
           ruby-version: $RUBY_VERSION
           bundler-cache: false
           
-      # STEP 3 - INSTALL DEPENDENCIES
+      # STEP 4 - INSTALL DEPENDENCIES
       - name: Install dependencies
         run: bundle install
 
-      # STEP 4 - RUN LINTER
+      # STEP 5 - RUN LINTER
       - name: Run linter
         run: bundle exec rake lint
