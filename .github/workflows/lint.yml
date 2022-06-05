@@ -1,6 +1,9 @@
 # For more information see: https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby
 
-name: Ruby
+name: Run Lint
+
+env:
+  RUBY_VERSION: '2.7.5' # set up a fallback before reading the .ruby-version file
 
 on:
   push:
@@ -19,7 +22,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # STEP 1 - INSTALL RUBY
+      # STEP 1 - DETERMINE RUBY VERSION
+      - name: Read Ruby version
+        id: version
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./.ruby-version
+      - name: Echo .ruby-version
+        run: echo "${{ steps.version.outputs.content }}" >> $RUBY_VERSION
+
+      # STEP 2 - INSTALL RUBY
       - uses: actions/checkout@v3
       - name: Setup Ruby
       # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
@@ -27,13 +39,13 @@ jobs:
       # uses: ruby/setup-ruby@v1
         uses: ruby/setup-ruby@2b019609e2b0f1ea1a2bc8ca11cb82ab46ada124
         with:
-          ruby-version-file: '.ruby-version'
+          ruby-version: $RUBY_VERSION
           bundler-cache: false
           
-      # STEP 2 - INSTALL DEPENDENCIES
+      # STEP 3 - INSTALL DEPENDENCIES
       - name: Install dependencies
         run: bundle install
 
-      # STEP 3 - RUN LINTER
+      # STEP 4 - RUN LINTER
       - name: Run linter
         run: bundle exec rake lint
