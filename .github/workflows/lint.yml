@@ -33,7 +33,7 @@ jobs:
         with:
           path: ${{ github.workspace }}/.ruby-version
       - name: Save Ruby version to env var
-        run: echo "RUBY_VERSION=(${{ steps.version.outputs.content }} | cut -d'-' -f 2)" >> $GITHUB_ENV
+        run: echo "RUBY_VERSION=`${{ steps.version.outputs.content }} | cut -d'-' -f 2`" >> $GITHUB_ENV
 
       # STEP 3 - INSTALL RUBY
       - name: Install Ruby
