@@ -22,6 +22,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # STEP 3 - INSTALL DEPENDENCIES
+      - name: readdir
+        run: ls -la
+
       # STEP 1 - DETERMINE RUBY VERSION
       - name: Read Ruby version
         id: version
