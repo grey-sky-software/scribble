@@ -3,6 +3,7 @@ require './apps/web/mixins/check_authentication'
 module Web
   module Controllers
     module Dashboard
+      # Responsible for querying any data needed to render the dashboard view
       class Index
         include CheckAuthentication
         include Web::Action
@@ -12,7 +13,7 @@ module Web
         #   used to know whether we should save the note locally or not
         expose :authenticated?
 
-        def call(params)
+        def call(_)
         end
       end
     end

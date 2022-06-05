@@ -2,6 +2,7 @@ require 'hanami/helpers'
 require 'hanami/assets'
 
 module Web
+  # Core web application configuration
   class Application < Hanami::Application
     configure do
       ##

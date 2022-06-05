@@ -1,5 +1,7 @@
 require 'singleton'
 
+# The Repository responsible for allowing a
+# NoteTag to interface with the database
 class NoteTagRepository < Hanami::Repository
   include Singleton
 

@@ -3,13 +3,15 @@ require './apps/web/mixins/check_authentication'
 module Web
   module Controllers
     module Notes
+      # Responsible for querying any data needed to render the
+      # list of the current user's Notes
       class Index
         include CheckAuthentication
         include Web::Action
 
         expose :notes
 
-        def call(params)
+        def call(_)
           # I dunno, figure out something to do in here
         end
 

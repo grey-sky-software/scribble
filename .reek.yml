@@ -1,0 +1,14 @@
+# See https://github.com/troessner/reek#configuration for config options
+
+detectors:
+  IrresponsibleModule:
+    exclude:
+      - "Scribble" # The module defined in lib/scribble.rb
+
+directories:
+  "spec":
+    IrresponsibleModule:
+      enabled: false
+  "lib/scribble/repositories":
+    ManualDispatch:
+      enabled: false

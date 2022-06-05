@@ -1,5 +1,7 @@
 require 'singleton'
 
+# The Repository responsible for allowing a
+# NoteAttachment to interface with the database
 class NoteAttachmentRepository < Hanami::Repository
   include Singleton
 

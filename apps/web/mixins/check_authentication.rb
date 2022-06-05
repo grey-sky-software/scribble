@@ -1,3 +1,5 @@
+# A mixin that can be included in an action to check if the user triggering
+# this action is authenticated, and finding who it is if so
 module CheckAuthentication
   # @return [Boolean]
   #   whether or not the user is currently authenticated
