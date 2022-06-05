@@ -29,7 +29,11 @@ jobs:
         with:
           ruby-version-file: '.ruby-version'
           bundler-cache: false
+          
+      # STEP 2 - INSTALL DEPENDENCIES
+      - name: Install dependencies
+        run: bundle install
 
-      # STEP 2 - RUN LINTER
+      # STEP 3 - RUN LINTER
       - name: Run linter
         run: bundle exec rake lint
