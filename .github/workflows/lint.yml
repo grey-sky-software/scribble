@@ -2,9 +2,6 @@
 
 name: Run Lint
 
-env:
-  RUBY_VERSION: '2.7.4' # set up a fallback before reading the .ruby-version file
-
 on:
   push:
     branches: [ "main" ]
@@ -25,27 +22,18 @@ jobs:
       # STEP 1 - CHECKOUT REPO
       - name: Checkout Repo
         uses: actions/checkout@v3
-    
-      # STEP 2 - DETERMINE RUBY VERSION
-      - name: Read Ruby version
-        id: version
-        uses: juliangruber/read-file-action@v1
-        with:
-          path: ${{ github.workspace }}/.ruby-version
-      - name: Save Ruby version to env var
-        run: echo "RUBY_VERSION=`${{ steps.version.outputs.content }} | cut -d'-' -f 2`" >> $GITHUB_ENV
 
-      # STEP 3 - INSTALL RUBY
+      # STEP 2 - INSTALL RUBY
+      # will use Ruby version from .ruby-version file
       - name: Install Ruby
         uses: ruby/setup-ruby@2b019609e2b0f1ea1a2bc8ca11cb82ab46ada124
         with:
-          ruby-version: ${{ env.RUBY_VERSION }}
           bundler-cache: false
           
-      # STEP 4 - INSTALL DEPENDENCIES
+      # STEP 3 - INSTALL DEPENDENCIES
       - name: Install dependencies
         run: bundle install
 
-      # STEP 5 - RUN LINTER
+      # STEP 4 - RUN LINTER
       - name: Run linter
         run: bundle exec rake lint
