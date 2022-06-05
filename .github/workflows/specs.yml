@@ -28,11 +28,8 @@ jobs:
       - name: Install Ruby
         uses: ruby/setup-ruby@2b019609e2b0f1ea1a2bc8ca11cb82ab46ada124
         with:
+          # setting this to "true" also runs "bundle install"
           bundler-cache: true
-          
-      # STEP 3 - INSTALL DEPENDENCIES
-      - name: Install dependencies
-        run: bundle install
 
       # STEP 4 - RUN SPECS
       - name: Run specs
