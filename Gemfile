@@ -6,6 +6,7 @@ gem 'hanami',       '~> 1.3'
 gem 'hanami-model', '~> 1.3'
 gem 'pg'
 gem 'rack'
+gem 'shrine'
 
 group :development do
   gem 'babel-transpiler'
