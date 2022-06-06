@@ -18,4 +18,8 @@ class UserRepository < Hanami::Repository
       super
     end
   end
+
+  def notes_for(id:)
+    notes.where(user_id: id)
+  end
 end

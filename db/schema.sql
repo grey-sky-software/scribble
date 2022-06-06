@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.3
--- Dumped by pg_dump version 14.3
+-- Dumped from database version 14.3 (Debian 14.3-1.pgdg110+1)
+-- Dumped by pg_dump version 14.3 (Debian 14.3-1.pgdg110+1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -21,7 +21,7 @@ DROP DATABASE IF EXISTS scribble;
 -- Name: scribble; Type: DATABASE; Schema: -; Owner: -
 --
 
-CREATE DATABASE scribble WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'en_US';
+CREATE DATABASE scribble WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'en_US.UTF-8';
 
 
 \connect scribble
@@ -49,16 +49,6 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
 --
 
 COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
-
-
---
--- Name: note_type; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.note_type AS ENUM (
-    'basic',
-    'list'
-);
 
 
 SET default_tablespace = '';
@@ -97,8 +87,7 @@ CREATE TABLE public.note_tags (
 CREATE TABLE public.notes (
     id uuid DEFAULT public.uuid_generate_v4() NOT NULL,
     user_id uuid NOT NULL,
-    body text NOT NULL,
-    type public.note_type NOT NULL,
+    body jsonb NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
