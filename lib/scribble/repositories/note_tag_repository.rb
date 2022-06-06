@@ -1,8 +1,10 @@
 require 'singleton'
 
+# The Repository responsible for allowing a
+# NoteTag to interface with the database
 class NoteTagRepository < Hanami::Repository
   include Singleton
-  
+
   associations do
     belongs_to :user
     belongs_to :note

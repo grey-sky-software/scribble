@@ -8,7 +8,7 @@ Hanami::Model.migration do
     end
 
     alter_table(:note_attachments) do
-      add_foreign_key( [:note_id], :notes, name: :note_attatchments_fk_to_notes)
+      add_foreign_key([:note_id], :notes, name: :note_attatchments_fk_to_notes)
     end
   end
 
@@ -21,7 +21,7 @@ Hanami::Model.migration do
     end
 
     alter_table(:note_attachments) do
-      drop_foreign_key( [:note_id], name: :note_attatchments_fk_to_notes)
+      drop_foreign_key([:note_id], name: :note_attatchments_fk_to_notes)
     end
   end
 end

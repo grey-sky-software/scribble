@@ -1,5 +1,7 @@
 require 'singleton'
 
+# The Repository responsible for allowing a
+# User to interface with the database
 class UserRepository < Hanami::Repository
   include Singleton
 

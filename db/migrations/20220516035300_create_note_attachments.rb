@@ -9,7 +9,8 @@ Hanami::Model.migration do
       column :updated_at, DateTime, null: false
     end
 
-    execute 'ALTER TABLE note_attachments ADD CONSTRAINT note_attachments_pkey PRIMARY KEY (note_id, filename)'
+    execute 'ALTER TABLE note_attachments ADD CONSTRAINT '\
+            'note_attachments_pkey PRIMARY KEY (note_id, filename)'
   end
 
   down do
