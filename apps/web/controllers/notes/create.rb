@@ -18,7 +18,12 @@ module Web
         #before { use_json(self) }
 
         params do
-          required(:body).filled
+          predicate(:array?, message: 'is not an array') do |current|
+            current.is_a?(Array)
+          end
+
+          required(:body).filled(:str?)
+          optional(:tags) { filled? & array? }
         end
 
         def call(params)
@@ -30,6 +35,10 @@ module Web
           end
 
           note = Note.create(body: body, user_id: current_user.id)
+
+          (params[:tags] || []).each do |tag|
+            NoteTag.create(note_id: note.id, user_id: current_user.id, value: tag)
+          end
 
           redirect_to routes.root_path unless self.format == :json
           status 201, { id: note.id }.to_json

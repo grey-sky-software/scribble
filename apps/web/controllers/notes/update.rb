@@ -14,14 +14,29 @@ module Web
         #before { use_json(self) }
 
         params do
-          required(:body).value(:string).filled
-          required(:id).value(:string).filled
-          optional(:tags).value(:array).filled
+          predicate(:array?, message: 'is not an array') do |current|
+            current.is_a?(Array)
+          end
+
+          required(:body).filled(:str?)
+          required(:id).filled(:str?)
+          optional(:tags) { filled? & array? }
         end
 
         def call(params)
+          note.update(body: params[:body])
+          note.tags.delete
+
+          (params[:tags] || []).each do |tag|
+            NoteTag.create(note_id: note.id, user_id: current_user.id, value: tag)
+          end
+
           redirect_to routes.root_path unless self.format == :json
           status 200, { id: note.id }.to_json
+        end
+
+        def note
+          Note.find(params[:id])
         end
       end
     end

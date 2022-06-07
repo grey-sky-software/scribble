@@ -4,7 +4,7 @@ module CheckAuthentication
   # @return [Boolean]
   #   whether or not the user is currently authenticated
   def authenticated?
-    false
+    true
   end
 
   # @return [User]

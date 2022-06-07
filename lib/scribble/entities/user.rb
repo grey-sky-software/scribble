@@ -8,6 +8,12 @@ class User < Hanami::Entity
     UserRepository.send(method, *args)
   end
 
+  # Allows us to call repository methods for an instance of the entity on an
+  # instance of the entity, such as `User.find(1).update(...)`
+  def method_missing(method, *args)
+    UserRepository.send(method, id, *args)
+  end
+
   def notes
     UserRepository.notes_for(id: id)
   end

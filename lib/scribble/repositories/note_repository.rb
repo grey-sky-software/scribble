@@ -20,4 +20,17 @@ class NoteRepository < Hanami::Repository
       super
     end
   end
+
+  def attachments_for(id:)
+    note_attachments.where(note_id: id)
+  end
+
+  def tags_for(id:)
+    note_tags.where(note_id: id)
+  end
+
+  def user_for(note:)
+    user_id = note.to_h[:user_id]
+    users.where(id: user_id).first
+  end
 end

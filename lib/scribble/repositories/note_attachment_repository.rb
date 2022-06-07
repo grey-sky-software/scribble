@@ -18,4 +18,9 @@ class NoteAttachmentRepository < Hanami::Repository
       super
     end
   end
+
+  def note_for(attachment:)
+    note_id = attachment.to_h[:note_id]
+    notes.where(id: note_id).first
+  end
 end

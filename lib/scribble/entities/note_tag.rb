@@ -7,4 +7,14 @@ class NoteTag < Hanami::Entity
   def self.method_missing(method, *args)
     NoteTagRepository.send(method, *args)
   end
+
+  # Allows us to call repository methods for an instance of the entity on an
+  # instance of the entity, such as `NoteTag.find(1).update(...)`
+  def method_missing(method, *args)
+    NoteTagRepository.send(method, id, *args)
+  end
+
+  def notes
+    NoteTagRepository.notes_for(tag: self)
+  end
 end

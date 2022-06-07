@@ -7,4 +7,22 @@ class Note < Hanami::Entity
   def self.method_missing(method, *args)
     NoteRepository.send(method, *args)
   end
+
+  # Allows us to call repository methods for an instance of the entity on an
+  # instance of the entity, such as `Note.find(1).update(...)`
+  def method_missing(method, *args)
+    NoteRepository.send(method, id, *args)
+  end
+
+  def attachments
+    NoteRepository.attachments_for(id: id)
+  end
+
+  def tags
+    NoteRepository.tags_for(id: id)
+  end
+
+  def user
+    NoteRepository.user_for(note: self)
+  end
 end
