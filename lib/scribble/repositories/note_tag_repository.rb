@@ -20,7 +20,7 @@ class NoteTagRepository < Hanami::Repository
     end
   end
 
-  def notes_for(tag:)
+  def notes_with(tag:)
     parsed_tag = tag.to_h
     note_ids = note_tags
       .where(user_id: parsed_tag[:user_id])

@@ -15,6 +15,6 @@ class NoteTag < Hanami::Entity
   end
 
   def notes
-    NoteTagRepository.notes_for(tag: self)
+    NoteTagRepository.notes_with(tag: self)
   end
 end
