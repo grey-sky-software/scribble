@@ -26,10 +26,10 @@ class NoteTagRepository < Hanami::Repository
 
   def notes_with(tag:)
     parsed_tag = tag.to_h
-    note_ids = note_tags
-      .where(user_id: parsed_tag[:user_id])
-      .select(:note_id)
-      .map { |t| t[:note_id] }
+    note_ids = note_tags.
+      where(user_id: parsed_tag[:user_id]).
+      select(:note_id).
+      pluck(:note_id)
     notes.where(id: note_ids)
   end
 end

@@ -1,6 +1,6 @@
 require './apps/web/mixins/check_authentication'
 require './apps/web/validations/validation_predicates'
-#require './apps/web/mixins/uses_json'
+# require './apps/web/mixins/uses_json'
 
 module Web::Controllers::Notes
   # This action will be hit by authenticated users to save their newly written note
@@ -10,22 +10,22 @@ module Web::Controllers::Notes
   class Create
     include CheckAuthentication
     include Web::Action
-    #include UsesJson
+    # include UsesJson
 
     before :must_be_authenticated
     before { halt 400 unless params.valid? }
-    #before { use_json(self) }
+    # before { use_json(self) }
 
     params do
       predicates ValidationPredicates
 
-      required(:body).filled(:str?)
+      required(:body) { filled? & json? }
       optional(:tags) { filled? & array? }
     end
 
     def call(params)
       Note.transaction do
-        note = Note.create(body: body, user_id: current_user.id)
+        note = Note.create(body: params[:body], user_id: current_user.id)
 
         tags.each do |tag|
           NoteTag.create(note_id: note.id, user_id: current_user.id, value: tag)
@@ -36,15 +36,10 @@ module Web::Controllers::Notes
       status 201, { id: note.id }.to_json
     end
 
-    def body
-      Json.parse(params[:body])
-    rescue EncodingError
-      { body: params[:body] }.to_json
-    end
-
     def tags
-      return [] if params[:tags].blank?
-      params[:tags]
+      tag_val = params[:tags]
+      return [] if tag_val.blank?
+      tag_val
     end
   end
 end

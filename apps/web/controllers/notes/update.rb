@@ -6,19 +6,19 @@ module Web::Controllers::Notes
   class Update
     include CheckAuthentication
     include Web::Action
-    #include UsesJson
+    # include UsesJson
 
     params do
       predicates ValidationPredicates
 
-      required(:body).filled(:str?)
+      required(:body) { filled? & json? }
       required(:id).filled(:str?)
       optional(:tags) { filled? & array? }
     end
 
     before :must_be_authenticated
     before { halt 400 unless params.valid? }
-    #before { use_json(self) }
+    # before { use_json(self) }
 
     def call(params)
       Note.transaction do

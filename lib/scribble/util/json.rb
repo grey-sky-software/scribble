@@ -13,7 +13,7 @@ class Json
     Oj.dump(hash)
   end
 
-  def self.parse(str, symbolize: true)
-    Oj.load(str, symbolize_names: symbolize)
+  def self.parse(str, *args)
+    Oj.load(str, *args)
   end
 end

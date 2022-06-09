@@ -1,0 +1,4 @@
+en:
+  errors:
+    array?: must be an array
+    json?: must be JSON

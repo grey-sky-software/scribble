@@ -4,14 +4,16 @@ module CheckAuthentication
   # @return [Boolean]
   #   whether or not the user is currently authenticated
   def authenticated?
-    true# current_user.present?
+    true
   end
 
   # @return [User]
   #   the currently authenticated user, if the user is authenticated
   def current_user
     return nil unless authenticated?
-    User.first # Find the user based on the token provided (or whatever the auth implementation we decide on uses)
+    # Find the user based on the token provided
+    # (or whatever the auth implementation we decide on uses)
+    User.first
   end
 
   # @return [void]
