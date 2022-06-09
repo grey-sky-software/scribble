@@ -11,14 +11,18 @@ class UserRepository < Hanami::Repository
     has_many :note_attachments, through: :notes
   end
 
-  def self.method_missing(method, *args)
+  def self.method_missing(method, *args, &block)
     if instance.respond_to?(method)
-      instance.send(method, *args)
+      instance.send(method, *args, &block)
     elsif users.respond_to?(method)
-      users.send(method, *args)
+      users.send(method, *args, &block)
     else
       super
     end
+  end
+
+  def self.transaction(&block)
+    configuration.connection.transaction(&block)
   end
 
   def notes_for(id:)

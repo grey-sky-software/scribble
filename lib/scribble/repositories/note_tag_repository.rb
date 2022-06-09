@@ -10,14 +10,18 @@ class NoteTagRepository < Hanami::Repository
     belongs_to :note
   end
 
-  def self.method_missing(method, *args)
+  def self.method_missing(method, *args, &block)
     if instance.respond_to?(method)
-      instance.send(method, *args)
+      instance.send(method, *args, &block)
     elsif note_tags.respond_to?(method)
-      note_tags.send(method, *args)
+      note_tags.send(method, *args, &block)
     else
       super
     end
+  end
+
+  def self.transaction(&block)
+    configuration.connection.transaction(&block)
   end
 
   def notes_with(tag:)

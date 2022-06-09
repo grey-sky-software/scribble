@@ -37,8 +37,8 @@ module Web::Controllers::Notes
     end
 
     def body
-      JSON.parse(params[:body]) # switch to Oj
-    rescue JSON::ParserError
+      Json.parse(params[:body])
+    rescue EncodingError
       { body: params[:body] }.to_json
     end
 
