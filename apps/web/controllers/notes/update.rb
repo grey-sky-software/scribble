@@ -1,6 +1,7 @@
 require './apps/web/mixins/check_authentication'
-require './apps/web/mixins/validation_predicates'
-#require './apps/web/mixins/uses_json'
+require './apps/web/validations/validation_predicates'
+# require './apps/web/validations/web/controllers/notes/update_params'
+# require './apps/web/mixins/uses_json'
 
 module Web::Controllers::Notes
   class Update
@@ -8,16 +9,18 @@ module Web::Controllers::Notes
     include Web::Action
     #include UsesJson
 
-    before :must_be_authenticated
-    before { halt 400 unless params.valid? }
-    #before { use_json(self) }
-
-    predicates ValidationPredicates
+    # params Web::Controllers::Notes::UpdateParams
     params do
+      predicates ValidationPredicates
+
       required(:body).filled(:str?)
       required(:id).filled(:str?)
       optional(:tags) { filled? & array? }
     end
+
+    before :must_be_authenticated
+    before { halt 400 unless params.valid? }
+    #before { use_json(self) }
 
     def call(params)
       Note.transaction do

@@ -1,5 +1,9 @@
 require 'oj'
 
+Oj.default_options = {
+  mode: :rails,
+}
+
 class Json
   def self.method_missing(method, *args)
     Oj.send(method, *args)

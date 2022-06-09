@@ -1,5 +1,5 @@
 require './apps/web/mixins/check_authentication'
-require './apps/web/mixins/validation_predicates'
+require './apps/web/validations/validation_predicates'
 #require './apps/web/mixins/uses_json'
 
 module Web::Controllers::Notes
@@ -16,8 +16,9 @@ module Web::Controllers::Notes
     before { halt 400 unless params.valid? }
     #before { use_json(self) }
 
-    predicates ValidationPredicates
     params do
+      predicates ValidationPredicates
+
       required(:body).filled(:str?)
       optional(:tags) { filled? & array? }
     end
