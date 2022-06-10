@@ -1,11 +1,11 @@
 require './apps/web/mixins/check_authentication'
-require './apps/web/validators/action_predicates'
+require './apps/web/validations/action_predicates'
 
 module Web::Controllers::Notes
   # POST /notes
-  # This action will be hit by authenticated users to save their newly written note
+  # This {Action} will be hit by authenticated users to save their newly written note
   # to the database.
-  # For importing notes to the database from the user's local storage, see [@TODO]
+  # For importing notes to the database from the user's local storage, see (@todo)
   class Create
     include CheckAuthentication
     include Web::Action
@@ -28,7 +28,7 @@ module Web::Controllers::Notes
       status 201, { id: note.id }.to_json
     end
 
-    # Starts a transaction to create a new Note and any tags using the
+    # Starts a transaction to create a new {Note} and any {NoteTag}s using the
     # provided parameters.
     #
     # @return [void]
@@ -48,6 +48,7 @@ module Web::Controllers::Notes
     # Otherwise, return the value of the `tags` param.
     #
     # @return [Array<String>]
+    #   The array of tag values we want to create for this {Note}.
     def tags
       tag_val = params[:tags]
       return [] if tag_val.blank?

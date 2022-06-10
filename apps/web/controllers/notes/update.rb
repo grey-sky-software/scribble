@@ -1,11 +1,12 @@
 require './apps/web/mixins/check_authentication'
-require './apps/web/validators/action_predicates'
+require './apps/web/validations/action_predicates'
 
 module Web::Controllers::Notes
   # PUT /notes/:id
-  # Endpoint that will be hit by the front-end to update the details of a Note object.
-  # @note: This endpoint is not additive - it will replace the attributes of the Note
-  #        with the provided attributes.
+  # Endpoint that will be hit by the front-end to update the details of a {Note}.
+  # @note
+  #   This endpoint is not additive - it will replace the attributes of the {Note}
+  #   with the provided attributes.
   class Update
     include CheckAuthentication
     include Web::Action
@@ -29,22 +30,21 @@ module Web::Controllers::Notes
       status 200, { id: note_id }.to_json
     end
 
-    # Checks if the provided `id` param belongs to an existing Note and
-    # returns the Note if so.
+    # Checks if the provided `#note_id` belongs to an existing {Note} and
+    # returns the {Note} if so.
     # Otherwise, stops the flow of the action and returns a `404`.
     #
-    # @return [Array<String>]
+    # @return [Note]
+    #   The {Note} with the provided `#id`.
     def note
-      id = params[:id]
-      halt 404 unless Note.exist?(id: id)
-      Note.find(id)
+      halt 404 unless Note.exist?(id: note_id)
+      Note.find(note_id)
     end
 
-    # Returns the ID of the queried Note.
-    #
     # @return [Integer]
+    #   The provided ID that we want to use to find the {Note} to update.
     def note_id
-      note.id
+      params[:id]
     end
 
     # Checks if the provided `tags` param is `#blank?` and returns an empty
@@ -52,16 +52,17 @@ module Web::Controllers::Notes
     # Otherwise, return the value of the `tags` param.
     #
     # @return [Array<String>]
+    #   The array of tag values we want to update this {Note} with.
     def tags
       tags_val = params[:tags]
       return [] if tags_val.blank?
       tags_val
     end
 
-    # Starts a transaction to update the found Note with any provided
+    # Starts a transaction to update the found {Note} with any provided
     # parameters.
     # It's important to keep in mind that the provided params will overwrite
-    # the existing associated attribute on the Note, not expand on it.
+    # the existing associated attribute on the {Note}, not expand on it.
     #
     # @return [void]
     def update_note

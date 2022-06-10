@@ -1,5 +1,5 @@
-# Include this module in an action and pass the `self` instance of the action
-# to the `use_json` method to make that action accept and respond with JSON.
+# Include this module in an {Action} and pass the `self` instance of the {Action}
+# to the `#use_json` method to make that {Action} accept and respond with JSON.
 #
 # @example
 #   require './apps/web/mixins/uses_json'
@@ -8,7 +8,7 @@
 #   ...
 #   before { use_json(self) }
 module UsesJson
-  # Configures the provided `action` for accepting in and responding with JSON.
+  # Configures the provided {Action} for accepting in and responding with JSON.
   #
   # @return [void]
   def use_json(action)

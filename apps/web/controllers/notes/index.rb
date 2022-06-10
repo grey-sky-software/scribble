@@ -3,7 +3,7 @@ require './apps/web/mixins/check_authentication'
 module Web::Controllers::Notes
   # GET /notes
   # Responsible for querying any data needed to render the
-  # list of the current user's Notes
+  # list of the current user's {Note}s.
   class Index
     include CheckAuthentication
     include Web::Action
@@ -15,9 +15,9 @@ module Web::Controllers::Notes
     end
 
     # @return [ROM::Relation[Notes]]
-    #   the value of notes will depend on whether the user is authenticated or not.
-    #   if authenticated, we'll get the notes from the DB.
-    #   otherwise, we'll get them from local storage.
+    #   The value of `#notes` will depend on whether the user is authenticated or not.
+    #   If authenticated, we'll get the notes from the DB.
+    #   Otherwise, we'll get them from local storage.
     def notes
       return unless authenticated?
       current_user.notes.order { created_at.desc }
