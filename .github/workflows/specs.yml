@@ -1,0 +1,52 @@
+# For more information see: https://github.com/marketplace/actions/setup-ruby-jruby-and-truffleruby
+
+name: Run Specs
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/scribble
+
+permissions:
+  contents: read
+
+jobs:
+  specs:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: scribble
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      # STEP 1 - CHECKOUT REPO
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      # STEP 2 - INSTALL RUBY
+      # will use Ruby version from the repo (either .ruby-version or Gemfile, not entirely sure)
+      - name: Install Ruby
+        uses: ruby/setup-ruby@2b019609e2b0f1ea1a2bc8ca11cb82ab46ada124
+        with:
+          # setting this to "true" also runs "bundle install"
+          bundler-cache: true
+          
+      # STEP 3 - SETUP DB
+      - name: Setup Database
+        run: bundle exec rake db:prepare
+
+      # STEP 4 - RUN SPECS
+      - name: Run specs
+        run: bundle exec rake
