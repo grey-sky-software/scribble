@@ -16,4 +16,11 @@ class Json
   def self.parse(str, *args)
     Oj.load(str, *args)
   end
+
+  def self.valid?(str)
+    self.parse(str)
+    true
+  rescue ArgumentError, EncodingError, JSON::ParserError
+    false
+  end
 end

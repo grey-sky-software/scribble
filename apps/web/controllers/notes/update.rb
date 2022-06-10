@@ -1,5 +1,4 @@
 require './apps/web/mixins/check_authentication'
-require './apps/web/validations/validation_predicates'
 # require './apps/web/mixins/uses_json'
 
 module Web::Controllers::Notes
@@ -8,13 +7,17 @@ module Web::Controllers::Notes
     include Web::Action
     # include UsesJson
 
-    params do
-      predicates ValidationPredicates
+    params Class.new(Hanami::Action::Params) {
+      predicate(:json?, message: 'must be JSON') do |current|
+        Json.valid?(current) || current.is_a?(Hash)
+      end
 
-      required(:body) { filled? & json? }
-      required(:id).filled(:str?)
-      optional(:tags) { filled? & array? }
-    end
+      validations do
+        required(:body) { filled? & json? }
+        required(:id).filled(:str?)
+        optional(:tags) { filled? & array? }
+      end
+    }
 
     before :must_be_authenticated
     before { halt 400 unless params.valid? }
@@ -22,7 +25,7 @@ module Web::Controllers::Notes
 
     def call(params)
       Note.transaction do
-        note.update(body: body)
+        note.update(body: params[:body])
         note.tags.delete
 
         tags.each do |tag|
@@ -32,12 +35,6 @@ module Web::Controllers::Notes
 
       redirect_to routes.root_path unless self.format == :json
       status 200, { id: note.id }.to_json
-    end
-
-    def body
-      Json.parse(params[:body])
-    rescue EncodingError
-      { body: params[:body] }.to_json
     end
 
     def note

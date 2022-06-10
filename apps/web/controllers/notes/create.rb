@@ -1,5 +1,4 @@
 require './apps/web/mixins/check_authentication'
-require './apps/web/validations/validation_predicates'
 # require './apps/web/mixins/uses_json'
 
 module Web::Controllers::Notes
@@ -16,19 +15,24 @@ module Web::Controllers::Notes
     before { halt 400 unless params.valid? }
     # before { use_json(self) }
 
-    params do
-      predicates ValidationPredicates
+    params Class.new(Hanami::Action::Params) {
+      predicate(:json?, message: 'must be JSON') do |current|
+        Json.valid?(current) || current.is_a?(Hash)
+      end
 
-      required(:body) { filled? & json? }
-      optional(:tags) { filled? & array? }
-    end
+      validations do
+        required(:body) { filled? & json? }
+        optional(:tags) { filled? & array? }
+      end
+    }
 
     def call(params)
       Note.transaction do
-        note = Note.create(body: params[:body], user_id: current_user.id)
+        user_id = current_user.id
+        note = Note.create(body: params[:body], user_id: user_id)
 
         tags.each do |tag|
-          NoteTag.create(note_id: note.id, user_id: current_user.id, value: tag)
+          NoteTag.create(note_id: note.id, user_id: user_id, value: tag)
         end
       end
 
