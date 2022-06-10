@@ -11,6 +11,7 @@ class Note < Hanami::Entity
   # Allows us to call repository methods for an instance of the entity on an
   # instance of the entity, such as `Note.find(1).update(...)`.
   def method_missing(method, *args, &block)
+    return hashed[method.to_sym] if hashed.key?(method.to_sym)
     NoteRepository.send(method, id, *args, &block)
   end
 
@@ -29,6 +30,14 @@ class Note < Hanami::Entity
   # @return [ROM::Struct::User]
   #   The {User} who created this {Note}.
   def user
-    NoteRepository.user_for(note: self)
+    NoteRepository.user_for(user_id: user_id)
+  end
+
+  private
+
+  # @return [Hash]
+  #   The current {Note} converted to a {Hash} for accessing its attributes.
+  def hashed
+    self.to_h
   end
 end

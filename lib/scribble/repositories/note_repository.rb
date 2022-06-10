@@ -49,13 +49,12 @@ class NoteRepository < Hanami::Repository
     note_tags.where(note_id: id)
   end
 
-  # @param [Note] note
-  #   The {Note} that we want to get the {NoteAttachment}s for.
+  # @param [UUID] user_id
+  #   The ID of the {User} who created this {Note}.
   #
   # @return [ROM::Struct::User]
   #   The {User} who created this {Note}.
-  def user_for(note:)
-    user_id = note.to_h[:user_id]
+  def user_for(user_id:)
     users.where(id: user_id).first
   end
 end

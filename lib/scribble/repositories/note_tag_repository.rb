@@ -30,16 +30,16 @@ class NoteTagRepository < Hanami::Repository
     configuration.connection.transaction(&block)
   end
 
-  # @param [NoteTag] tag
-  #   The {NoteTag} we want to use the value of to find the {Note}s associated with.
+  # @param [UUID] user_id
+  #   The ID of the {User} who created this {NoteTag} so we can find the
+  #   {User}'s {Note}s with this {NoteTag}.
   #
   # @return [ROM::Relation[Notes]]
   #   The collection of the current user's {Note}s that are associated
   #   with this {NoteTag}.
-  def notes_with(tag:)
-    parsed_tag = tag.to_h
+  def notes_with(user_id:)
     note_ids = note_tags.
-      where(user_id: parsed_tag[:user_id]).
+      where(user_id: user_id).
       select(:note_id).
       pluck(:note_id)
     notes.where(id: note_ids)

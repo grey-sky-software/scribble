@@ -29,13 +29,13 @@ class NoteAttachmentRepository < Hanami::Repository
     configuration.connection.transaction(&block)
   end
 
-  # @param [NoteAttachment] attachment
-  #   The {NoteAttachment} that we want to get the {Note} for.
+  # @param [UUID] note_id
+  #   The `note_id` associated with the {NoteAttachment} that we want
+  #   to get the {Note} for.
   #
   # @return [ROM::Struct::Note]
   #   The {Note} associated with this {NoteAttachment}.
-  def note_for(attachment:)
-    note_id = attachment.to_h[:note_id]
+  def note_for(note_id:)
     notes.where(id: note_id).first
   end
 end
