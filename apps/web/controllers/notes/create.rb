@@ -1,4 +1,5 @@
 require './apps/web/mixins/check_authentication'
+require './apps/web/validators/action_predicates'
 # require './apps/web/mixins/uses_json'
 
 module Web::Controllers::Notes
@@ -16,9 +17,7 @@ module Web::Controllers::Notes
     # before { use_json(self) }
 
     params Class.new(Hanami::Action::Params) {
-      predicate(:json?, message: 'must be JSON') do |current|
-        Json.valid?(current) || current.is_a?(Hash)
-      end
+      ActionPredicates.init(self)
 
       validations do
         required(:body) { filled? & json? }
