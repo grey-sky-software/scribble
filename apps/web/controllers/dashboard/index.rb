@@ -1,6 +1,7 @@
 require './apps/web/mixins/check_authentication'
 
 module Web::Controllers::Dashboard
+  # GET /
   # Responsible for querying any data needed to render the dashboard view
   class Index
     include CheckAuthentication

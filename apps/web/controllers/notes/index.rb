@@ -1,6 +1,7 @@
 require './apps/web/mixins/check_authentication'
 
 module Web::Controllers::Notes
+  # GET /notes
   # Responsible for querying any data needed to render the
   # list of the current user's Notes
   class Index
