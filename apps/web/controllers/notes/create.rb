@@ -1,6 +1,5 @@
 require './apps/web/mixins/check_authentication'
 require './apps/web/validators/action_predicates'
-# require './apps/web/mixins/uses_json'
 
 module Web::Controllers::Notes
   # POST /notes
@@ -10,11 +9,9 @@ module Web::Controllers::Notes
   class Create
     include CheckAuthentication
     include Web::Action
-    # include UsesJson
 
     before :must_be_authenticated
     before { halt 400 unless params.valid? }
-    # before { use_json(self) }
 
     params Class.new(Hanami::Action::Params) {
       ActionPredicates.init(self)
@@ -31,6 +28,10 @@ module Web::Controllers::Notes
       status 201, { id: note.id }.to_json
     end
 
+    # Starts a transaction to create a new Note and any tags using the
+    # provided parameters.
+    #
+    # @return [void]
     def create_note
       Note.transaction do
         user_id = current_user.id
@@ -42,6 +43,11 @@ module Web::Controllers::Notes
       end
     end
 
+    # Checks if the provided `tags` param is `#blank?` and returns an empty
+    # array as a fallback if so.
+    # Otherwise, return the value of the `tags` param.
+    #
+    # @return [Array<String>]
     def tags
       tag_val = params[:tags]
       return [] if tag_val.blank?
