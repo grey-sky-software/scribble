@@ -1,29 +1,56 @@
-# build stage
-FROM ruby:2.7.5-alpine AS build-env
-ADD . /dist
-RUN apk add --update --no-cache \
-  curl \
-  gcc \
-  g++ \
-  libmagic \
-  lzip \
-  make \
-  npm \
-  postgresql-dev
+FROM ruby:2.7.5-alpine AS builder
 
+LABEL maintainer="Grey Sky Software <team@greysky.software>"
 
-RUN apk add --update --no-cache --wait 10 \
-  libstdc++ \
-  libx11 \
-  libxrender \
-  libxext \
-  libssl1.1
+RUN apk add --no-cache \
+    #
+    # required
+    build-base \
+    libffi-dev \
+    nodejs \
+    tzdata \
+    postgresql-dev \
+    zlib-dev \
+    libxml2-dev \
+    libxslt-dev \
+    readline-dev \
+    bash \
+    #
+    # Nice to haves
+    git \
+    vim \
+    #
+    # Fixes watch file issues with things like HMR
+    libnotify-dev
 
+FROM builder as development
 
-RUN cd /dist && bundle install
+# Add the current apps files into docker image
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
 
-# final stage
-FROM alpine
-WORKDIR /dist
-COPY --from=build-env /dist .
-CMD bundle exec hanami server
+# Install any extra dependencies via Aptfile - These are installed on Heroku
+# COPY Aptfile /usr/src/app/Aptfile
+# RUN apk add --update $(cat /usr/src/app/Aptfile | xargs)
+
+ENV PATH /usr/src/app/bin:$PATH
+
+# Install latest bundler
+RUN bundle config --global silence_root_warning 1
+
+EXPOSE 3000
+CMD ["bundle", "exec", "hanami", "server", "--host=0.0.0.0", "--port=3000"]
+
+FROM development AS production
+
+# Install Ruby Gems
+COPY Gemfile /usr/src/app
+COPY Gemfile.lock /usr/src/app
+RUN bundle check || bundle install --jobs=$(nproc)
+
+# Install NPM Libraries
+# COPY package.json /usr/src/app
+# RUN npm install
+
+# Copy the rest of the app
+COPY . /usr/src/app
