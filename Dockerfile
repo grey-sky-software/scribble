@@ -3,27 +3,31 @@ FROM ruby:2.7.5-alpine AS builder
 LABEL maintainer="Grey Sky Software <team@greysky.software>"
 
 RUN apk add --no-cache \
-    #
-    # required
-    build-base \
-    libffi-dev \
-    nodejs \
-    tzdata \
-    postgresql \
-    postgresql-contrib \
-    postgresql-dev \
-    zlib-dev \
-    libxml2-dev \
-    libxslt-dev \
-    readline-dev \
-    bash \
-    #
-    # Nice to haves
-    git \
-    vim \
-    #
-    # Fixes watch file issues with things like HMR
-    libnotify-dev
+  #
+  # required
+  build-base \
+  libffi-dev \
+  nodejs \
+  tzdata \
+  postgresql \
+  postgresql-contrib \
+  postgresql-dev \
+  zlib-dev \
+  libxml2-dev \
+  libxslt-dev \
+  readline-dev \
+  bash \
+  #
+  # Nice to haves
+  git \
+  vim \
+  #
+  # Fixes watch file issues with things like HMR
+  libnotify-dev
+
+# Install wait-for for docker-compose
+RUN wget -O /bin/wait-for https://raw.githubusercontent.com/eficode/wait-for/master/wait-for
+RUN chmod +x /bin/wait-for
 
 FROM builder as development
 

@@ -45,7 +45,7 @@ services:
       timeout: 2s
       retries: 10
     logging:
-      driver: none
+      driver: "json-file"
 
   # redis:
   #   image: redis:4.0.14-alpine

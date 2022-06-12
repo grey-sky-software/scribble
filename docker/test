@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Run db migrations for test database (if necessary)
-wait-for -t 60 postgresql:5432 -- bundle exec rake db:prepare || exit 4
+wait-for -t 60 postgres:5432 -- bundle exec rake db:test:prepare || exit 4
 
 # Run the test
 HANAMI_ENV=test bundle exec rake $*

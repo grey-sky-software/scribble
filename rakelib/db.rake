@@ -40,9 +40,7 @@ namespace :db do
   desc 'Prepares the database for use by creating it, loading the schema.sql, '\
        'and safely running any migrations'
   task :prepare do
-    system('bundle exec hanami db create')
-    system('bundle exec rake db:load')
-    system('bundle exec rake db:migrate:safe')
+    system('bundle exec hanami db prepare')
   end
 
   namespace :prepare do
@@ -61,5 +59,15 @@ namespace :db do
     system('bundle exec hanami db drop')
     system('bundle exec hanami db create')
     system('bundle exec rake db:load')
+  end
+
+
+  namespace :test do
+    task :prepare do
+      system('HANAMI_ENV=test bundle exec hanami db prepare')
+      # system('bundle exec hanami db create')
+      # system('bundle exec rake db:load')
+      # system('bundle exec rake db:migrate:safe')
+    end
   end
 end
