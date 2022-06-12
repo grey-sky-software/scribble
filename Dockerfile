@@ -9,6 +9,8 @@ RUN apk add --no-cache \
     libffi-dev \
     nodejs \
     tzdata \
+    postgresql \
+    postgresql-contrib \
     postgresql-dev \
     zlib-dev \
     libxml2-dev \
@@ -46,7 +48,7 @@ FROM development AS production
 # Install Ruby Gems
 COPY Gemfile /usr/src/app
 COPY Gemfile.lock /usr/src/app
-RUN bundle check || bundle install --jobs=$(nproc)
+RUN bundle check || bundle install
 
 # Install NPM Libraries
 # COPY package.json /usr/src/app
