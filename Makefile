@@ -1,7 +1,7 @@
 
 .PHONY: start
 start:
-	@docker compose up --build -d postgres web
+	@docker compose --env-file .env.development up --build -d postgres web
 
 .PHONY: stop
 stop:
@@ -42,7 +42,7 @@ logstail:
 
 .PHONY: test
 test:
-	@docker compose run --rm --name scribble_tests web docker/test $(filter-out $@,$(MAKECMDGOALS))
+	@docker compose run --env-file .env.test --rm --name scribble_tests web docker/test $(filter-out $@,$(MAKECMDGOALS))
 
 # Catch-all target which does nothing
 %:

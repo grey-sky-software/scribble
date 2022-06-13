@@ -12,9 +12,6 @@ x-app: &app
     target: development
   tmpfs:
     - /tmp
-  environment:
-    # REDIS_URL: redis://@redis:6379/1
-    DATABASE_URL: postgres://postgres:postgres@postgres:5432/
   volumes:
     - .:/usr/src/app:cached
     - bundler:/usr/local/bundle:delegated
