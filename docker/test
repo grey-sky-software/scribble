@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Make sure we load the test env vars
+export $(cat docker/.env.test | xargs)
+
 # Run db migrations for test database (if necessary)
 wait-for -t 60 postgres:5432 -- bundle exec rake db:test:prepare || exit 4
 

@@ -1,7 +1,7 @@
 
 .PHONY: start
 start:
-	@docker compose --env-file .env.development up --build -d postgres web
+	@docker compose --env-file docker/.env.development up --build -d postgres web
 
 .PHONY: stop
 stop:
@@ -25,7 +25,9 @@ clean:
 
 .PHONY: shell
 shell:
-	@docker compose exec web sh
+	@docker compose run --name scribble_shell --rm -i -t web sh
+	@docker compose exec scribble_shell sh -c "bundle exec rake env:dev:setup"
+	@docker compose exec -it scribble_shell sh
 
 .PHONY: status
 status:
@@ -42,7 +44,7 @@ logstail:
 
 .PHONY: test
 test:
-	@docker compose run --env-file .env.test --rm --name scribble_tests web docker/test $(filter-out $@,$(MAKECMDGOALS))
+	@docker compose run --rm --name scribble_tests web docker/test $(filter-out $@,$(MAKECMDGOALS))
 
 # Catch-all target which does nothing
 %:

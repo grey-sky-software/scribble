@@ -3,6 +3,7 @@ RSpec.describe Web::Controllers::Dashboard::Index, type: :action do
   let(:params) { Hash[] }
 
   before(:example) do
+    User.create(email: 'testy', pw_hash: 'hmmm')
     Note.create(user_id: User.first.id, body: { test: 'value' }.to_json)
   end
 
