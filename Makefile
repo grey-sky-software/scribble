@@ -1,7 +1,7 @@
 
 .PHONY: start
 start:
-	@docker compose --env-file docker/.env.development up --build -d postgres web
+	@docker compose up --build -d postgres web
 
 .PHONY: stop
 stop:
@@ -25,9 +25,7 @@ clean:
 
 .PHONY: shell
 shell:
-	@docker compose run --name scribble_shell --rm -i -t web sh
-	@docker compose exec scribble_shell sh -c "bundle exec rake env:dev:setup"
-	@docker compose exec -it scribble_shell sh
+	@docker compose exec web sh
 
 .PHONY: status
 status:
