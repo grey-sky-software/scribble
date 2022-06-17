@@ -1,10 +1,10 @@
 #!/bin/sh
 
 # Make sure we load the test env vars
-export $(cat docker/.env.test | xargs)
+bundle exec rake env:test:setup
 
 # Run db migrations for test database (if necessary)
 wait-for -t 60 postgres:5432 -- bundle exec rake db:test:prepare || exit 4
 
 # Run the test
-HANAMI_ENV=test bundle exec rake $*
+HANAMI_ENV=test bundle exec rspec $*
