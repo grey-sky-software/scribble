@@ -1,0 +1,15 @@
+name: Build and Deploy QA
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Noop Placeholder
+        run: echo 'noop placeholder'
