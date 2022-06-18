@@ -1,5 +1,8 @@
 name: Build and Deploy Live
 
+env:
+  HEROKU_API_KEY: ${{ secrets.HEROKU_AUTH_TOKEN }}
+
 on:
   workflow_dispatch:
 
@@ -26,6 +29,7 @@ jobs:
           sudo chmod a+r /etc/apt/keyrings/docker.gpg
           sudo apt-get update
           sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+          curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
 
       # STEP 3 - BUILD AND DEPLOY IMAGE
       - name: Build and Deploy Image
@@ -33,3 +37,4 @@ jobs:
           docker login --username=_ --password=${{ secrets.HEROKU_AUTH_TOKEN }} registry.heroku.com
           docker build -t registry.heroku.com/gss-scribble-prod/web .
           docker push registry.heroku.com/gss-scribble-prod/web
+          heroku container:release web
