@@ -1,0 +1,25 @@
+x-app: &app
+  image: scribble:latest
+  mem_limit: 512m
+  build:
+    context: .
+    dockerfile: Dockerfile
+    target: production
+  tmpfs:
+    - /tmp
+  volumes:
+    - .:/usr/src/app:cached
+    - bundler:/usr/local/bundle:delegated
+    - node_modules:/usr/src/app/node_modules:delegated
+  depends_on:
+    postgres:
+      condition: service_healthy
+
+services:
+  web:
+    <<: *app
+    command: bash -c "rm -rf /usr/src/app/tmp/pids/server.pid && bundle exec hanami server --port=${PORT:-5000}"
+    ports:
+      - "${PORT:-5000}:5000"
+    environment:
+      PRODUCTION: 'true'

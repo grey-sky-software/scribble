@@ -58,5 +58,7 @@ RUN bundle check || bundle install
 # COPY package.json /usr/src/app
 # RUN npm install
 
+RUN bundle exec rake assets:precompile
+
 # Copy the rest of the app
 COPY . /usr/src/app
