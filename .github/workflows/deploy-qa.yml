@@ -36,6 +36,5 @@ jobs:
         run: |
           docker login --username=_ --password=${{ secrets.HEROKU_AUTH_TOKEN }} registry.heroku.com
           docker-compose build -f docker-compose.yml -f docker-compose.prod.yml -t registry.heroku.com/gss-scribble-qa/web .
-        # docker build -t registry.heroku.com/gss-scribble-qa/web .
           docker push registry.heroku.com/gss-scribble-qa/web
           heroku container:release web -a gss-scribble-qa
