@@ -35,6 +35,7 @@ jobs:
       - name: Build and Deploy Image
         run: |
           docker login --username=_ --password=${{ secrets.HEROKU_AUTH_TOKEN }} registry.heroku.com
-          docker build -t registry.heroku.com/gss-scribble-prod/web .
+          docker-compose build -f docker-compose.yml -f docker-compose.prod.yml -t registry.heroku.com/gss-scribble-prod/web .
+        # docker build -t registry.heroku.com/gss-scribble-prod/web .
           docker push registry.heroku.com/gss-scribble-prod/web
           heroku container:release web -a gss-scribble-prod

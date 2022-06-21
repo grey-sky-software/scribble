@@ -1,0 +1,49 @@
+####
+# This Dockerfile is used for the production version of Scribble
+####
+
+FROM ruby:2.7.5-alpine
+
+LABEL maintainer="Grey Sky Software <team@greysky.software>"
+
+# install cron
+RUN apk add --no-cache \
+  #
+  # required
+  build-base \
+  libffi-dev \
+  nodejs \
+  tzdata \
+  postgresql \
+  postgresql-contrib \
+  postgresql-dev \
+  zlib-dev \
+  libxml2-dev \
+  libxslt-dev \
+  readline-dev \
+  bash \
+  #
+  # Nice to haves
+  git \
+  vim
+
+# throw errors if Gemfile has been modified since Gemfile.lock
+RUN bundle config --global frozen 1
+
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+COPY Gemfile /usr/src/app/
+COPY Gemfile.lock /usr/src/app/
+COPY .ruby-version /usr/src/app/
+RUN bundle install
+
+COPY . /usr/src/app
+
+ENV LANG=en_US.UTF-8
+
+ENV HANAMI_HOST=0.0.0.0
+ENV HANAMI_ENV=production
+
+EXPOSE 2300
+CMD ["hanami server"]

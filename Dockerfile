@@ -1,3 +1,7 @@
+####
+# This Dockerfile is used for the development version of Scribble
+####
+
 FROM ruby:2.7.5-alpine AS builder
 
 LABEL maintainer="Grey Sky Software <team@greysky.software>"
@@ -44,8 +48,8 @@ ENV PATH /usr/src/app/bin:$PATH
 # Install latest bundler
 RUN bundle config --global silence_root_warning 1
 
-EXPOSE 3000
-CMD ["bundle", "exec", "hanami", "server", "--host=0.0.0.0", "--port=3000"]
+EXPOSE 2300
+CMD ["bundle", "exec", "hanami", "server", "--host=0.0.0.0", "--port=2300"]
 
 FROM development AS production
 
@@ -61,4 +65,4 @@ RUN bundle check || bundle install
 # Copy the rest of the app
 COPY . /usr/src/app
 
-RUN bundle exec rake assets:precompile
+# RUN bundle exec rake assets:precompile

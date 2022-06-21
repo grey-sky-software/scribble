@@ -3,7 +3,7 @@ x-app: &app
   mem_limit: 512m
   build:
     context: .
-    dockerfile: Dockerfile
+    dockerfile: Dockerfile.prod
     target: production
   tmpfs:
     - /tmp
@@ -14,12 +14,14 @@ x-app: &app
   depends_on:
     postgres:
       condition: service_healthy
+  links:
+    - postgres
 
 services:
   web:
     <<: *app
-    command: bash -c "rm -rf /usr/src/app/tmp/pids/server.pid && bundle exec hanami server --port=${PORT:-5000}"
+    command: hanami server
     ports:
-      - "${PORT:-5000}:5000"
+      - "${PORT:-2300}:2300"
     environment:
       PRODUCTION: 'true'
