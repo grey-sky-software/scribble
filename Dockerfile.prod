@@ -40,9 +40,11 @@ RUN bundle install
 
 COPY . /usr/src/app
 
-ENV LANG=en_US.UTF-8
+ARG port
 
+ENV LANG=en_US.UTF-8
 ENV HANAMI_HOST=0.0.0.0
 ENV HANAMI_ENV=production
+ENV PORT=$port
 
-CMD hanami server --host=${HANAMI_HOST} --port=${PORT}
+CMD "hanami db migrate && hanami server --port=$PORT"
