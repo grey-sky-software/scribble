@@ -47,7 +47,7 @@ services:
     <<: *app
     command: hanami server
     ports:
-      - "${PORT:-2300}:2300"
+      - "${PORT}:${PORT}"
     environment:
       PRODUCTION: 'true'
 
