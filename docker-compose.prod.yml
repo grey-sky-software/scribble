@@ -4,7 +4,6 @@ x-app: &app
   build:
     context: .
     dockerfile: Dockerfile.prod
-    target: production
   tmpfs:
     - /tmp
   volumes:
