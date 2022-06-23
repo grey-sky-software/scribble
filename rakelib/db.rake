@@ -32,6 +32,7 @@ namespace :db do
   namespace :migrate do
     desc 'Run any pending migrations on the database without updating the schema file'
     task :safe do
+      system("echo DATABASE_URL = #{ENV.fetch('DATABASE_URL')}")
       system('bundle exec hanami db migrate')
     end
   end

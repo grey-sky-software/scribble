@@ -47,4 +47,4 @@ ENV HANAMI_HOST=0.0.0.0
 ENV HANAMI_ENV=production
 ENV PORT=$port
 
-CMD "hanami db migrate && hanami server --host=0.0.0.0 --port=$PORT"
+CMD "bundle exec rake db:migrate:safe && bundle exec hanami server --host=0.0.0.0 --port=$PORT"
