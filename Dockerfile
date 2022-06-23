@@ -2,29 +2,25 @@
 # This Dockerfile is used for the development version of Scribble
 ####
 
-FROM ruby:2.7.5-alpine AS builder
+FROM ruby:2.7.5-alpine
 
 LABEL maintainer="Grey Sky Software <team@greysky.software>"
 
 RUN apk add --no-cache \
-  #
-  # required
+  bash \
   build-base \
+  git \
   libffi-dev \
+  libxml2-dev \
+  libxslt-dev \
   nodejs \
-  tzdata \
   postgresql \
   postgresql-contrib \
   postgresql-dev \
-  zlib-dev \
-  libxml2-dev \
-  libxslt-dev \
   readline-dev \
-  bash \
-  #
-  # Nice to haves
-  git \
+  tzdata \
   vim \
+  zlib-dev \
   #
   # Fixes watch file issues with things like HMR
   libnotify-dev
@@ -33,29 +29,19 @@ RUN apk add --no-cache \
 RUN wget -O /bin/wait-for https://raw.githubusercontent.com/eficode/wait-for/master/wait-for
 RUN chmod +x /bin/wait-for
 
-FROM builder as development
-
 # Add the current apps files into docker image
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
-
-# Install any extra dependencies via Aptfile - These are installed on Heroku
-# COPY Aptfile /usr/src/app/Aptfile
-# RUN apk add --update $(cat /usr/src/app/Aptfile | xargs)
 
 ENV PATH /usr/src/app/bin:$PATH
 
 # Install latest bundler
 RUN bundle config --global silence_root_warning 1
 
-EXPOSE 2300
-CMD ["bundle", "exec", "hanami", "server", "--host=0.0.0.0", "--port=2300"]
-
-FROM development AS production
-
 # Install Ruby Gems
 COPY Gemfile /usr/src/app
 COPY Gemfile.lock /usr/src/app
+COPY .ruby-version /usr/src/app/
 RUN bundle check || bundle install
 
 # Install NPM Libraries
@@ -65,4 +51,5 @@ RUN bundle check || bundle install
 # Copy the rest of the app
 COPY . /usr/src/app
 
-# RUN bundle exec rake assets:precompile
+EXPOSE 2300
+CMD bundle exec hanami server --host=0.0.0.0 --port=2300

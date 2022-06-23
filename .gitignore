@@ -1,4 +1,4 @@
 /public/assets*
 /tmp
-.env
-.env.*
+/.env
+/.env.*

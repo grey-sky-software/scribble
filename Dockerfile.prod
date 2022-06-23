@@ -6,26 +6,21 @@ FROM ruby:2.7.5-alpine
 
 LABEL maintainer="Grey Sky Software <team@greysky.software>"
 
-# install cron
 RUN apk add --no-cache \
-  #
-  # required
+  bash \
   build-base \
+  git \
   libffi-dev \
+  libxml2-dev \
+  libxslt-dev \
   nodejs \
-  tzdata \
   postgresql \
   postgresql-contrib \
   postgresql-dev \
-  zlib-dev \
-  libxml2-dev \
-  libxslt-dev \
   readline-dev \
-  bash \
-  #
-  # Nice to haves
-  git \
-  vim
+  tzdata \
+  vim \
+  zlib-dev
 
 # throw errors if Gemfile has been modified since Gemfile.lock
 RUN bundle config --global frozen 1
@@ -40,11 +35,4 @@ RUN bundle install
 
 COPY . /usr/src/app
 
-ARG port
-
-ENV LANG=en_US.UTF-8
-ENV HANAMI_HOST=0.0.0.0
-ENV HANAMI_ENV=production
-ENV PORT=$port
-
-CMD bundle exec rake db:migrate:safe && bundle exec hanami assets precompile && bundle exec hanami server --host=0.0.0.0 --port=$PORT
+CMD bundle exec rake db:migrate:safe && bundle exec hanami assets precompile && bundle exec hanami server --host=$HANAMI_HOST --port=$PORT

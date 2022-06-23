@@ -43,9 +43,9 @@ services:
 
   web:
     <<: *app
-    command: bash -c "rm -rf /usr/src/app/tmp/pids/server.pid && bundle exec hanami server --port=3000 --host=0.0.0.0"
+    command: bash -c "rm -rf /usr/src/app/tmp/pids/server.pid && bundle exec hanami server --host=0.0.0.0 --port=2300"
     ports:
-      - "127.0.0.1:${PORT:-3000}:3000"
+      - "127.0.0.1:${PORT:-2300}:2300"
     env_file: docker/.env.development
 
 volumes:
