@@ -1,11 +1,11 @@
 
-.PHONY: start
-start:
-	@docker compose up --build -d postgres web
+.PHONY: bundle-install
+bundle-install:
+	@docker compose run --rm --no-deps --name scribble_install web bundle install
 
-.PHONY: stop
-stop:
-	@docker compose stop
+.PHONY: clean
+clean:
+	@docker compose down -v
 
 .PHONY: init
 init:
@@ -15,23 +15,6 @@ init:
 lint:
 	@docker compose run --rm --no-deps --name scribble_linter web bundle exec rake lint $(filter-out $@,$(MAKECMDGOALS))
 
-.PHONY: bundle-install
-bundle-install:
-	@docker compose run --rm --no-deps --name scribble_install web bundle install
-
-.PHONY: clean
-clean:
-	@docker compose down -v
-
-.PHONY: shell
-shell:
-	@docker compose exec web sh
-
-.PHONY: status
-status:
-	@echo "Running services:"
-	@docker ps --filter name=scribble --format "table {{.Names}}\t{{.RunningFor}}\t{{.Status}}"
-
 .PHONY: logs
 logs:
 	@docker compose logs
@@ -39,6 +22,23 @@ logs:
 .PHONY: logstail
 logstail:
 	@docker compose logs -f
+
+.PHONY: shell
+shell:
+	@docker compose exec web sh
+
+.PHONY: start
+start:
+	@docker compose up --build -d postgres web
+
+.PHONY: status
+status:
+	@echo "Running services:"
+	@docker ps --filter name=scribble --format "table {{.Names}}\t{{.RunningFor}}\t{{.Status}}"
+
+.PHONY: stop
+stop:
+	@docker compose stop
 
 .PHONY: test
 test:

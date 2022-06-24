@@ -66,9 +66,6 @@ namespace :db do
   namespace :test do
     task :prepare do
       system('HANAMI_ENV=test bundle exec hanami db prepare')
-      # system('bundle exec hanami db create')
-      # system('bundle exec rake db:load')
-      # system('bundle exec rake db:migrate:safe')
     end
   end
 end

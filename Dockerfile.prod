@@ -35,4 +35,6 @@ RUN bundle install
 
 COPY . /usr/src/app
 
-CMD bundle exec rake db:migrate:safe && bundle exec hanami assets precompile && bundle exec hanami server --host=$HANAMI_HOST --port=$PORT
+CMD bundle exec rake db:migrate:safe && \
+    bundle exec hanami assets precompile && \
+    bundle exec hanami server --host=$HANAMI_HOST --port=$PORT

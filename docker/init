@@ -14,7 +14,8 @@ bundle install
 echo "------------------------"
 echo "Initializing database..."
 echo "------------------------"
-export $(cat docker/.env.development | xargs)
+bundle exec rake env:dev:setup
 bundle exec rake db:prepare
-export $(cat docker/.env.test | xargs)
+
+bundle exec rake env:test:setup
 bundle exec rake db:test:prepare
