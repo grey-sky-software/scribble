@@ -6,11 +6,12 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
+    # The branches below must be a subset of the branches above
     branches: [ "main" ]
   workflow_dispatch:
 
 env:
-  DATABASE_URL: postgres://postgres:postgres@localhost:5432/scribble
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/scribble_test
 
 permissions:
   contents: read
@@ -18,14 +19,14 @@ permissions:
 jobs:
   specs:
     runs-on: ubuntu-latest
-    
+
     services:
       postgres:
         image: postgres:14
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: scribble
+          POSTGRES_DB: scribble_test
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -42,7 +43,7 @@ jobs:
         with:
           # setting this to "true" also runs "bundle install"
           bundler-cache: true
-          
+
       # STEP 3 - SETUP DB
       - name: Setup Database
         run: bundle exec rake db:prepare
