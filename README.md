@@ -1,6 +1,8 @@
 # Scribble
 
-Use me to take notes.
+<br>
+
+I help you stay organized.
 
 <br>
 
@@ -10,10 +12,16 @@ Use me to take notes.
 
 ## Setup
 
+<br>
+
 The application is developed and deployed using Docker containers.  
 While using the Docker container for development is not required, it is highly recommended in order to keep development done within a consistent environment.
 
+<br>
+
 ### Environment Variables
+
+<br>
 
 The app depends on various environment variables at different stages.
 
@@ -28,11 +36,14 @@ For local development, these variables are contained in the `docker/.env.develop
 
 ## Initialization
 
-Using the Docker container and provided `make` commands, the application can be initiated using the
+<br>
+
+The application can be initialized using with
 ```
 make init
 ```
-command.
+
+<br>
 
 This command
 1. creates a Docker image using Ruby 2.7.5
@@ -43,24 +54,28 @@ This command
 
 ## Dev Server
 
-After initializing the Docker image, you can start up the development server by running
+<br>
+
+After initializing the Docker image, you can start the container and development server with
 ```
 make start
 ```
-
-By default, this will start the development server at `http://localhost:2300`.  
-To run the server on a different port, set the `PORT` environment variable in the `docker/.env.development` file.
+This will start the development server at `http://localhost:2300`.
 
 <br>
 
 ## Dev Console
+
+<br>
 
 To start up a developer console, you must first enter the running container with
 ```
 make shell
 ```
 
-Once in the shell, you can start the development console with
+<br>
+
+Once in the container, you can start the development console with
 ```
 bundle exec hanami console
 ```
@@ -69,18 +84,36 @@ bundle exec hanami console
 
 ## Linting
 
+<br>
 
+You can run the linter with
+```
+make lint
+```
+
+<br>
+
+This will lint all of the files in the application.  
+If you want to lint specific files, you can pass them as an argument to the lint command
+```
+make lint apps/web/controllers/dashboard/index.rb
+```
 
 <br>
 
 ## Testing
 
+<br>
 
+You can run the specs with
+```
+make test
+```
 
 <br>
 
-## Database Management
-
-
-
-<br>
+This will run all of the specs for the application.  
+If you want to run specific specs, you can pass them as an argument to the test command
+```
+make test spec/web/controllers/dashboard/index_spec.rb
+```
