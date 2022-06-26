@@ -25,11 +25,11 @@ While using the Docker container for development is not required, it is highly r
 
 The app depends on various environment variables at different stages.
 
-For local development, these variables are contained in the `docker/.env.development` file for the development environment, and `docker/.env.test` for the test environment.
+When running locally, these variables are contained in the `docker/.env.development` file for the development environment and `docker/.env.test` for the test environment.
 
 - `DATABASE_URL` - defines the URL that should be used to connect to the database. required.
 - `SMTP_HOST` - defines the host of the SMTP e-mail service used to allow the app to send e-mails. required if using e-mail.
-- `SMTP_PORT` - defines the post of the SMTP e-mail service used to allow the app to send e-mails. required if using e-mail.
+- `SMTP_PORT` - defines the port of the SMTP e-mail service used to allow the app to send e-mails. required if using e-mail.
 - `WEB_SESSIONS_SECRET` - secret used to encrypt session cookies. required if using session cookies. 
 
 <br>
@@ -38,7 +38,7 @@ For local development, these variables are contained in the `docker/.env.develop
 
 <br>
 
-The application can be initialized using with
+The application can be initialized with
 ```
 make init
 ```
@@ -46,7 +46,7 @@ make init
 <br>
 
 This command
-1. creates a Docker image using Ruby 2.7.5
+1. creates a Docker image using the Ruby version defined in `.ruby-version`
 2. installs `bundler` and all dependencies needed by the app as defined in the `Gemfile`
 3. initializes the development and test databases as defined by the `DATABASE_URL` environment variables
 

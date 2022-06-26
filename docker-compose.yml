@@ -27,7 +27,7 @@ services:
       - ./log:/root/log:cached
       - postgresql:/var/lib/postgresql/data:delegated
     ports:
-      - "127.0.0.1:5432:5432"
+      - "${HANAMI_HOST:-0.0.0.0}:5432:5432"
     environment:
       PSQL_HISTFILE: /root/log/.psql_history
       POSTGRES_USER: postgres
@@ -43,9 +43,9 @@ services:
 
   web:
     <<: *app
-    command: bash -c "rm -rf /usr/src/app/tmp/pids/server.pid && bundle exec hanami server --host=0.0.0.0 --port=2300"
+    command: bash -c "rm -rf /usr/src/app/tmp/pids/server.pid && bundle exec hanami server --host=${HANAMI_HOST:-0.0.0.0} --port=${PORT:-2300}"
     ports:
-      - "127.0.0.1:${PORT:-2300}:2300"
+      - "${HANAMI_HOST:-0.0.0.0}:${PORT:-2300}:${PORT:-2300}"
     env_file: docker/.env.development
 
 volumes:

@@ -34,7 +34,7 @@ jobs:
       # STEP 3 - BUILD AND DEPLOY IMAGE
       - name: Build and Deploy Image
         run: |
-          docker login --username=_ --password=${{ secrets.HEROKU_AUTH_TOKEN }} registry.heroku.com
-          docker-compose build -f docker-compose.yml -f docker-compose.prod.yml -t registry.heroku.com/gss-scribble-prod/web .
+          docker login --username=_ --password=${{ env.HEROKU_API_KEY }} registry.heroku.com
+          docker build -f Dockerfile.prod -t registry.heroku.com/gss-scribble-prod/web .
           docker push registry.heroku.com/gss-scribble-prod/web
           heroku container:release web -a gss-scribble-prod

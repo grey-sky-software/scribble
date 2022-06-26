@@ -1,11 +1,21 @@
+#!make
+include docker/.env.development
+export $(cat docker/.env.development | xargs)
 
 .PHONY: bundle-install
 bundle-install:
 	@docker compose run --rm --no-deps --name scribble_install web bundle install
 
+# Removes named volumes declared in the volumes section of the Compose file and anonymous volumes attached to containers
+# Also removes the image tagged "scribble"
 .PHONY: clean
 clean:
-	@docker compose down -v
+	@docker compose down -v --rmi all
+
+# Removes all volumes and images, regardless of relation to "scribble"
+.PHONY: clean-hard
+clean-hard:
+	@docker compose down -v && docker system prune -a -f
 
 .PHONY: init
 init:

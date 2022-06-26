@@ -51,5 +51,8 @@ RUN bundle check || bundle install
 # Copy the rest of the app
 COPY . /usr/src/app
 
-EXPOSE 2300
-CMD bundle exec hanami server --host=0.0.0.0 --port=2300
+ARG HANAMI_HOST=0.0.0.0
+ARG PORT=2300
+
+EXPOSE $PORT
+CMD bundle exec hanami server --host=$HANAMI_HOST --port=$PORT
