@@ -12,7 +12,7 @@ bundle-install:
 clean:
 	@docker compose down -v --rmi all
 
-# Removes all volumes and images, regardless of relation to "scribble"
+# Removes all volumes and images, both those related to "scribble" and dangling
 .PHONY: clean-hard
 clean-hard:
 	@docker compose down -v && docker system prune -a -f
