@@ -16,22 +16,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # # STEP 1 - CHECKOUT REPO
-      # - name: Checkout Repo
-      #   uses: actions/checkout@v3
-
-      # # STEP 2 - INSTALL RUBY
-      # # will use Ruby version from the repo (either .ruby-version or Gemfile, not entirely sure)
-      # - name: Install Ruby
-      #   uses: ruby/setup-ruby@2b019609e2b0f1ea1a2bc8ca11cb82ab46ada124
-      #   with:
-      #     # setting this to "true" also runs "bundle install"
-      #     bundler-cache: true
-
-      # # STEP 3 - RUN LINTER
-      # - name: Run linter
-      #   run: bundle exec rake lint
-
       # STEP 1 - CHECKOUT REPO
       - name: Checkout Repo
         uses: actions/checkout@v3
@@ -55,4 +39,4 @@ jobs:
 
       # STEP 4 - RUN LINT
       - name: Run Lint
-        run: make lint
+        run: make lint-ci

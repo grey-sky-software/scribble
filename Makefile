@@ -25,6 +25,11 @@ init:
 lint:
 	@docker compose run --rm --no-deps --name scribble_linter web bundle exec rake lint $(filter-out $@,$(MAKECMDGOALS))
 
+.PHONY: lint-ci
+lint-ci:
+	@docker compose run --rm --no-deps --name scribble_linter web bundle exec rubocop --require rubocop-airbnb $(filter-out $@,$(MAKECMDGOALS))
+	@docker compose run --rm --no-deps --name scribble_linter web bundle exec reek $(filter-out $@,$(MAKECMDGOALS))
+
 .PHONY: logs
 logs:
 	@docker compose logs
