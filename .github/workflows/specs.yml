@@ -43,4 +43,4 @@ jobs:
 
       # STEP 4 - RUN SPECS
       - name: Run Specs
-        run: make tests
+        run: make test
