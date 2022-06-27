@@ -9,7 +9,6 @@ namespace :db do
     system("psql #{ENV.fetch('DATABASE_URL')} < db/schema.sql")
   end
 
-
   desc 'Run any pending migrations on the database and dump the schema'
   task :migrate do
     # The schema.sql file does not get updated when you make changes to a migration, so
@@ -37,7 +36,6 @@ namespace :db do
     end
   end
 
-
   desc 'Prepares the database for use by creating it, loading the schema.sql, '\
        'and safely running any migrations'
   task :prepare do
@@ -53,7 +51,6 @@ namespace :db do
     end
   end
 
-
   desc 'Resets the database by dropping the current database, '\
        're-creating it, and loading the schema.sql'
   task :reset do
@@ -61,7 +58,6 @@ namespace :db do
     system('bundle exec hanami db create')
     system('bundle exec rake db:load')
   end
-
 
   namespace :test do
     task :prepare do

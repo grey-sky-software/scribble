@@ -3,6 +3,7 @@
 module CheckAuthentication
   # @return [Boolean]
   #   Whether or not the user is currently authenticated.
+  # This method smells of :reek:UtilityFunction
   def authenticated?
     User.first.present?
   end
