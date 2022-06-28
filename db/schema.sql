@@ -96,7 +96,8 @@ CREATE TABLE public.notes (
     user_id uuid NOT NULL,
     body jsonb NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    title text NOT NULL
 );
 
 
@@ -220,3 +221,4 @@ INSERT INTO public.schema_migrations (filename) VALUES ('20220511050104_create_u
 INSERT INTO public.schema_migrations (filename) VALUES ('20220516035300_create_note_attachments.rb');
 INSERT INTO public.schema_migrations (filename) VALUES ('20220517045256_create_note_tags.rb');
 INSERT INTO public.schema_migrations (filename) VALUES ('20220530223842_define_foreign_key_constraints_for_note_tables.rb');
+INSERT INTO public.schema_migrations (filename) VALUES ('20220628055058_add_title_to_notes.rb');
