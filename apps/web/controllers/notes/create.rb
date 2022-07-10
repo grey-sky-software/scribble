@@ -18,7 +18,8 @@ module Web::Controllers::Notes
 
       validations do
         required(:body) { filled? & json? }
-        optional(:tags) { filled? & array? }
+        required(:title).filled(:str?)
+        optional(:tags).filled(:array?)
       end
     }
 
@@ -35,7 +36,7 @@ module Web::Controllers::Notes
     def create_note
       Note.transaction do
         user_id = current_user.id
-        note = Note.create(body: params[:body], user_id: user_id)
+        note = Note.create(body: params[:body], title: params[:title], user_id: user_id)
 
         tags.each do |tag|
           NoteTag.create(note_id: note.id, user_id: user_id, value: tag)

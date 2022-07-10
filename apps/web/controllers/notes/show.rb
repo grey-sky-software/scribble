@@ -11,23 +11,18 @@ module Web::Controllers::Notes
     before { halt 400 unless params.valid? }
 
     params do
-      required(:id).filled
+      required(:id).filled(:str?)
     end
 
     expose :note
 
     def call(_)
-    end
-
-    # Checks if the provided `#note_id` belongs to an existing {Note} and
-    # returns the {Note} if so.
-    # Otherwise, stops the flow of the action and returns a `404`.
-    #
-    # @return [Note]
-    #   The {Note} with the provided `#id`.
-    def note
-      status 404, "No Note with ID #{note_id}" unless Note.exist?(id: note_id)
-      Note.find(note_id)
+      # For some reason, `halt` does not work in methods not called inside of this
+      # `#call` method.
+      # So putting the following in a `#note` method and letting the expose read
+      # that method directly, bypassing `#call` entirely, would not treat `halt` correctly.
+      halt 404, "No Note exists with ID \"#{note_id}\"" unless Note.exist?(id: note_id)
+      @note = Note.find(note_id)
     end
 
     # @return [Integer]

@@ -16,8 +16,9 @@ module Web::Controllers::Notes
 
       validations do
         required(:body) { filled? & json? }
+        required(:title).filled(:str?)
         required(:id).filled(:str?)
-        optional(:tags) { filled? & array? }
+        optional(:tags).filled(:array?)
       end
     }
 
@@ -37,7 +38,7 @@ module Web::Controllers::Notes
     # @return [Note]
     #   The {Note} with the provided `#id`.
     def note
-      halt 404 unless Note.exist?(id: note_id)
+      halt 404, "No Note exists with ID \"#{note_id}\"" unless Note.exist?(id: note_id)
       Note.find(note_id)
     end
 
@@ -67,7 +68,7 @@ module Web::Controllers::Notes
     # @return [void]
     def update_note
       Note.transaction do
-        note.update(body: params[:body])
+        note.update(body: params[:body], title: params[:title])
         note.tags.delete
 
         tags.each do |tag|

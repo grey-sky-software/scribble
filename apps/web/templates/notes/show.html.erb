@@ -1,3 +1,3 @@
 <div>
-  Body: <%= note.body[:data] %> (<span style='color: green;'><%= note.created_at.strftime('%Y-%m-%d %H:%M %p') %></span>)
+  [<a href='/notes/<%= note.id %>'><%= note.id %></a>] <%= note.body %> (<span style='color: green;'><%= note.created_at.strftime('%Y-%m-%d %H:%M %p') %></span>)
 </div>
