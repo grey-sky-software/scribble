@@ -110,6 +110,19 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: user_settings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_settings (
+    user_id uuid NOT NULL,
+    user_settings_fk_to_users uuid,
+    value jsonb NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -154,6 +167,14 @@ ALTER TABLE ONLY public.notes
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (filename);
+
+
+--
+-- Name: user_settings user_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_settings
+    ADD CONSTRAINT user_settings_pkey PRIMARY KEY (user_id);
 
 
 --
@@ -212,6 +233,14 @@ ALTER TABLE ONLY public.notes
 
 
 --
+-- Name: user_settings user_settings_user_settings_fk_to_users_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_settings
+    ADD CONSTRAINT user_settings_user_settings_fk_to_users_fkey FOREIGN KEY (user_settings_fk_to_users) REFERENCES public.users(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -220,3 +249,4 @@ INSERT INTO public.schema_migrations (filename) VALUES ('20220511050104_create_u
 INSERT INTO public.schema_migrations (filename) VALUES ('20220516035300_create_note_attachments.rb');
 INSERT INTO public.schema_migrations (filename) VALUES ('20220517045256_create_note_tags.rb');
 INSERT INTO public.schema_migrations (filename) VALUES ('20220530223842_define_foreign_key_constraints_for_note_tables.rb');
+INSERT INTO public.schema_migrations (filename) VALUES ('20220712022530_create_user_settings.rb');

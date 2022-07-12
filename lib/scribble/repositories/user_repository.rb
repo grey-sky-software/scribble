@@ -6,6 +6,7 @@ class UserRepository < Hanami::Repository
   include Singleton
 
   associations do
+    has_one :user_settings
     has_many :notes
     has_many :note_tags
     has_many :note_attachments, through: :notes
@@ -38,5 +39,14 @@ class UserRepository < Hanami::Repository
   #   The collection of {Note}s created by this {User}.
   def notes_for(id:)
     notes.where(user_id: id)
+  end
+
+  # @param [UUID] id
+  #   The ID of the {User} that we want to get the {UserSettings} for.
+  #
+  # @return [ROM::Struct::UserSettings]
+  #   The {UserSettings} object associated with this {User}.
+  def user_settings_for(id:)
+    user_settings.where(user_id: id).first
   end
 end

@@ -22,6 +22,24 @@ class User < Hanami::Entity
     UserRepository.notes_for(id: id)
   end
 
+  # @return [ROM::Struct::UserSettings]
+  #   The {UserSettings} object associated with this {User}.
+  def settings
+    UserRepository.user_settings_for(id: id)
+  end
+
+  # @param [Symbol, String]
+  #   The name of the attribute we want to retrieve the value of from the object.
+  # @return [any]
+  #   The value associated with the provided attribute key on this object, if the object
+  #   has an attribute matching the provided key.
+  # @raise [Scribble::MissingAttributesError]
+  #   If the object does not have a matching attribute.
+  def [](key)
+    return hashed[key.to_sym] if hashed.key?(key.to_sym)
+    raise Scribble::MissingAttributesError, "No attribute '#{key}' for object '#{self.class.name}'"
+  end
+
   private
 
   # @return [Hash]

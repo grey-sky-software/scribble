@@ -1,6 +1,8 @@
 # See https://github.com/troessner/reek#configuration for config options
 
 detectors:
+  DuplicateMethodCall:
+      max_calls: 2
   IrresponsibleModule:
     exclude:
       - "Scribble" # The module defined in lib/scribble.rb
