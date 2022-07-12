@@ -38,15 +38,15 @@ class UserRepository < Hanami::Repository
   # @return [ROM::Relation[Note]]
   #   The collection of {Note}s created by this {User}.
   def notes_for(id:)
-    notes.where(user_id: id)
+    notes.where(user_id: id).as(:entity)
   end
 
   # @param [UUID] id
   #   The ID of the {User} that we want to get the {UserSettings} for.
   #
-  # @return [ROM::Struct::UserSettings]
+  # @return [UserSettings]
   #   The {UserSettings} object associated with this {User}.
   def user_settings_for(id:)
-    user_settings.where(user_id: id).first
+    user_settings.where(user_id: id).as(:entity).first
   end
 end

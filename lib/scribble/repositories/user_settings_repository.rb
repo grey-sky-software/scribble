@@ -32,9 +32,9 @@ class UserSettingsRepository < Hanami::Repository
   # @param [UUID] user_id
   #   The ID of the {User} who this {UserSettings} belongs to.
   #
-  # @return [ROM::Struct::User]
+  # @return [User]
   #   The {User} who this {UserSettings} belongs to.
   def user_for(user_id:)
-    users.where(id: user_id).first
+    users.where(id: user_id).as(:entity).first
   end
 end

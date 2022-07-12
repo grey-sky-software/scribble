@@ -42,6 +42,6 @@ class NoteTagRepository < Hanami::Repository
       where(user_id: user_id).
       select(:note_id).
       pluck(:note_id)
-    notes.where(id: note_ids)
+    notes.where(id: note_ids).as(:entity)
   end
 end

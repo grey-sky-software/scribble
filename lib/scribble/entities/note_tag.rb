@@ -28,11 +28,11 @@ class NoteTag < Hanami::Entity
   # @return [any]
   #   The value associated with the provided attribute key on this object, if the object
   #   has an attribute matching the provided key.
-  # @raise [Scribble::MissingAttributesError]
+  # @raise [ROM::Struct::MissingAttribute]
   #   If the object does not have a matching attribute.
   def [](key)
     return hashed[key.to_sym] if hashed.key?(key.to_sym)
-    raise Scribble::MissingAttributesError, "No attribute '#{key}' for object '#{self.class.name}'"
+    raise ROM::Struct::MissingAttribute, "No attribute '#{key}' for object '#{self.class.name}'"
   end
 
   private

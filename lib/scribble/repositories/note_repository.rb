@@ -37,7 +37,7 @@ class NoteRepository < Hanami::Repository
   # @return [ROM::Relation[NoteAttachments]]
   #   The collection of {NoteAttachment}s associated with this {NoteRepository}.
   def attachments_for(id:)
-    note_attachments.where(note_id: id)
+    note_attachments.where(note_id: id).as(:entity)
   end
 
   # @param [UUID] id
@@ -46,15 +46,15 @@ class NoteRepository < Hanami::Repository
   # @return [ROM::Relation[NoteTags]]
   #   The collection of {NoteTags}s associated with this {NoteRepository}.
   def tags_for(id:)
-    note_tags.where(note_id: id)
+    note_tags.where(note_id: id).as(:entity)
   end
 
   # @param [UUID] user_id
   #   The ID of the {User} who created this {Note}.
   #
-  # @return [ROM::Struct::User]
+  # @return [User]
   #   The {User} who created this {Note}.
   def user_for(user_id:)
-    users.where(id: user_id).first
+    users.where(id: user_id).as(:entity).first
   end
 end

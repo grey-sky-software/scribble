@@ -15,10 +15,14 @@ class UserSettings < Hanami::Entity
     UserSettingsRepository.send(method, id, *args, &block)
   end
 
-  # @return [ROM::Struct::User]
+  # @return [User]
   #   The {User} who this {UserSettings} belongs to.
   def user
     UserSettingsRepository.user_for(user_id: user_id)
+  end
+
+  def values
+    hashed[:value]
   end
 
   # @param [Symbol, String]
@@ -26,11 +30,13 @@ class UserSettings < Hanami::Entity
   # @return [any]
   #   The value associated with the provided attribute key on this object, if the object
   #   has an attribute matching the provided key.
-  # @raise [Scribble::MissingAttributesError]
+  # @raise [ROM::Struct::MissingAttribute]
   #   If the object does not have a matching attribute.
   def [](key)
-    return hashed[key.to_sym] if hashed.key?(key.to_sym)
-    raise Scribble::MissingAttributesError, "No attribute '#{key}' for object '#{self.class.name}'"
+    sym_key = key.to_sym
+    return values[sym_key] if values.key?(sym_key)
+    return hashed[sym_key] if hashed.key?(sym_key)
+    raise ROM::Struct::MissingAttribute, "No attribute '#{key}' for object '#{self.class.name}'"
   end
 
   private

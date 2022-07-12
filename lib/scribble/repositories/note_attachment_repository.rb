@@ -33,9 +33,9 @@ class NoteAttachmentRepository < Hanami::Repository
   #   The `note_id` associated with the {NoteAttachment} that we want
   #   to get the {Note} for.
   #
-  # @return [ROM::Struct::Note]
+  # @return [Note]
   #   The {Note} associated with this {NoteAttachment}.
   def note_for(note_id:)
-    notes.where(id: note_id).first
+    notes.where(id: note_id).as(:entity).first
   end
 end
