@@ -21,10 +21,23 @@ class UserSettings < Hanami::Entity
     UserSettingsRepository.user_for(user_id: user_id)
   end
 
+  # @return [Hash]
+  #   The hash of `{ attribute: value }` pairs stored on this {UserSettings} entity.
   def values
     hashed[:value]
   end
 
+  # @note
+  #   If the provided `key` is an attribute in the {UserSettings} `value` object, then that
+  #   setting attribute's value will be returned.
+  #   Otherwise, will return the attribute from the {UserSettings} entity itself that matches
+  #   the `key`, if one exists.
+  #   Will raise an error if no attribute can be found on either object with the provided `key`.
+  # @example
+  #   user_settings = User.find('1a2b3c').settings => {UserSettings}
+  #   user_settings[:user_id] => '1a2b3c'
+  #   user_settings[:value] => { dark_mode: true, editor: 'fancy' }
+  #   user_settings[:dark_mode] => true
   # @param [Symbol, String]
   #   The name of the attribute we want to retrieve the value of from the object.
   # @return [any]
