@@ -28,7 +28,7 @@ class User < Hanami::Entity
     UserRepository.user_settings_for(id: id)
   end
 
-  # @param [Symbol, String]
+  # @param [String, Symbol]
   #   The name of the attribute we want to retrieve the value of from the object.
   # @return [any]
   #   The value associated with the provided attribute key on this object, if the object

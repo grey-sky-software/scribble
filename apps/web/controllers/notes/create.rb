@@ -18,7 +18,7 @@ module Web::Controllers::Notes
 
       validations do
         required(:body) { filled? & json? }
-        optional(:tags) { filled? & array? }
+        optional(:tags).filled(:array?)
       end
     }
 

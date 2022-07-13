@@ -38,7 +38,7 @@ class UserSettingsRepository < Hanami::Repository
   # @return [void]
   # @raise [ROM::Struct::MissingAttribute]
   #   If no setting exists with the provided `name`.
-  def update_value_for(user_id:, name:, value:)
+  def update_setting_for(user_id:, name:, value:)
     setting = user_settings.where(user_id: user_id)
     values = setting.as(:entity).first.values
 
@@ -47,6 +47,28 @@ class UserSettingsRepository < Hanami::Repository
 
     values[name.to_sym] = value
     setting.update(value: Json.build(values))
+  end
+
+  # @param [UUID] user_id
+  #   The ID of the {User} who this {UserSettings} belongs to.
+  # @param [Hash] payload
+  #   The payload of `{ attribute: value }` pairs that we want to use to
+  #   update the stored settings.
+  # @return [void]
+  # @raise [ROM::Struct::MissingAttribute]
+  #   If any of the attributes provided in the payload do not match a valid setting.
+  def update_settings_for(user_id:, payload:)
+    setting = user_settings.where(user_id: user_id)
+    values = setting.as(:entity).first.values
+
+    unknown_settings = payload.keys - values.keys
+    if unknown_settings.present?
+      raise ROM::Struct::MissingAttribute,
+        "Unknown setting names provided: '#{unknown_settings.join('\', \'')}'"
+    end
+
+    new_values = values.merge(payload)
+    setting.update(value: Json.build(new_values))
   end
 
   # @param [UUID] user_id

@@ -2,6 +2,11 @@ require './lib/scribble/repositories/user_settings_repository'
 
 # A {UserSettings} represents the collection of site preferences chosen by the {User}.
 class UserSettings < Hanami::Entity
+
+  DEFAULTS = {
+
+  }.freeze
+
   # Allows us to call all of the repository methods directly on the entity
   # for convenience such as `UserSettings.first` or `UserSettings.create`.
   def self.method_missing(method, *args, &block)
@@ -15,6 +20,11 @@ class UserSettings < Hanami::Entity
     UserSettingsRepository.send(method, id, *args, &block)
   end
 
+  # @example
+  #   user_settings = User.find('1a2b3c').settings => {UserSettings}
+  #   user_settings.value => { dark_mode: true, editor: 'fancy' }
+  #   user_settings.update_setting(name: 'dark_mode', value: false)
+  #   user_settings.value => { dark_mode: false, editor: 'fancy' }
   # @param [String, Symbol] name
   #   The name of the setting that we want to update the value for.
   # @param [any] value
@@ -22,8 +32,23 @@ class UserSettings < Hanami::Entity
   # @return [void]
   # @raise [ROM::Struct::MissingAttribute]
   #   If no setting exists with the provided `name`.
-  def update_value(name:, value:)
-    UserSettingsRepository.update_value_for(user_id: user_id, name: name, value: value)
+  def update_setting(name:, value:)
+    UserSettingsRepository.update_setting_for(user_id: user_id, name: name, value: value)
+  end
+
+  # @example
+  #   user_settings = User.find('1a2b3c').settings => {UserSettings}
+  #   user_settings.value => { dark_mode: true, editor: 'fancy' }
+  #   user_settings.update_settings(payload: { dark_mode: false, editor: 'markdown' })
+  #   user_settings.value => { dark_mode: false, editor: 'markdown' }
+  # @param [Hash] payload
+  #   The payload of `{ attribute: value }` pairs that we want to use to
+  #   update the stored settings.
+  # @return [void]
+  # @raise [ROM::Struct::MissingAttribute]
+  #   If any of the attributes provided in the payload do not match a valid setting.
+  def update_settings(payload:)
+    UserSettingsRepository.update_settings_for(user_id: user_id, payload: payload)
   end
 
   # @return [User]
@@ -49,7 +74,7 @@ class UserSettings < Hanami::Entity
   #   user_settings[:user_id] => '1a2b3c'
   #   user_settings[:value] => { dark_mode: true, editor: 'fancy' }
   #   user_settings[:dark_mode] => true
-  # @param [Symbol, String]
+  # @param [String, Symbol]
   #   The name of the attribute we want to retrieve the value of from the object.
   # @return [any]
   #   The value associated with the provided attribute key on this object, if the object

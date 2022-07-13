@@ -34,7 +34,7 @@ class Note < Hanami::Entity
     NoteRepository.user_for(user_id: user_id)
   end
 
-  # @param [Symbol, String]
+  # @param [String, Symbol]
   #   The name of the attribute we want to retrieve the value of from the object.
   # @return [any]
   #   The value associated with the provided attribute key on this object, if the object
