@@ -31,6 +31,26 @@ class UserSettingsRepository < Hanami::Repository
 
   # @param [UUID] user_id
   #   The ID of the {User} who this {UserSettings} belongs to.
+  # @param [String, Symbol] name
+  #   The name of the setting that we want to update the value for.
+  # @param [any] value
+  #   The value that we want to assign to this setting.
+  # @return [void]
+  # @raise [ROM::Struct::MissingAttribute]
+  #   If no setting exists with the provided `name`.
+  def update_value_for(user_id:, name:, value:)
+    setting = user_settings.where(user_id: user_id)
+    values = setting.as(:entity).first.values
+
+    raise ROM::Struct::MissingAttribute, "UserSettings do not have a setting named '#{name}'" unless
+      values.key?(name.to_sym)
+
+    values[name.to_sym] = value
+    setting.update(value: Json.build(values))
+  end
+
+  # @param [UUID] user_id
+  #   The ID of the {User} who this {UserSettings} belongs to.
   #
   # @return [User]
   #   The {User} who this {UserSettings} belongs to.

@@ -15,6 +15,17 @@ class UserSettings < Hanami::Entity
     UserSettingsRepository.send(method, id, *args, &block)
   end
 
+  # @param [String, Symbol] name
+  #   The name of the setting that we want to update the value for.
+  # @param [any] value
+  #   The value that we want to assign to this setting.
+  # @return [void]
+  # @raise [ROM::Struct::MissingAttribute]
+  #   If no setting exists with the provided `name`.
+  def update_value(name:, value:)
+    UserSettingsRepository.update_value_for(user_id: user_id, name: name, value: value)
+  end
+
   # @return [User]
   #   The {User} who this {UserSettings} belongs to.
   def user
