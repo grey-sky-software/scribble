@@ -1,5 +1,8 @@
 name: Build and Deploy QA
 
+env:
+  HEROKU_API_KEY: ${{ secrets.HEROKU_AUTH_TOKEN }}
+
 on:
   workflow_dispatch:
 
@@ -11,5 +14,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Noop Placeholder
-        run: echo 'noop placeholder'
+      # STEP 1 - CHECKOUT REPO
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      # STEP 2 - INSTALL DOCKER
+      - name: Install Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install ca-certificates curl gnupg lsb-release
+          sudo mkdir -p /etc/apt/keyrings
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+          sudo chmod a+r /etc/apt/keyrings/docker.gpg
+          sudo apt-get update
+          sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+          curl https://cli-assets.heroku.com/install-ubuntu.sh | sh
+
+      # STEP 3 - BUILD AND DEPLOY IMAGE
+      - name: Build and Deploy Image
+        run: |
+          docker login --username=_ --password=${{ env.HEROKU_API_KEY }} registry.heroku.com
+          docker build -f Dockerfile.prod -t registry.heroku.com/gss-scribble-qa/web .
+          docker push registry.heroku.com/gss-scribble-qa/web
+          heroku container:release web -a gss-scribble-qa

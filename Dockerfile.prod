@@ -1,0 +1,42 @@
+####
+# This Dockerfile is used for the production version of Scribble
+####
+
+FROM ruby:2.7.5-alpine
+
+LABEL maintainer="Grey Sky Software <team@greysky.software>"
+
+RUN apk add --no-cache \
+  bash \
+  build-base \
+  git \
+  libffi-dev \
+  libxml2-dev \
+  libxslt-dev \
+  nodejs \
+  postgresql \
+  postgresql-contrib \
+  postgresql-dev \
+  readline-dev \
+  tzdata \
+  vim \
+  zlib-dev
+
+# throw errors if Gemfile has been modified since Gemfile.lock
+RUN bundle config --global frozen 1
+
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+COPY Gemfile /usr/src/app/
+COPY Gemfile.lock /usr/src/app/
+COPY .ruby-version /usr/src/app/
+RUN bundle install
+
+COPY . /usr/src/app
+
+ARG HANAMI_HOST=0.0.0.0
+
+CMD bundle exec rake db:migrate:safe && \
+    bundle exec hanami assets precompile && \
+    bundle exec hanami server --host=$HANAMI_HOST --port=$PORT

@@ -1,4 +1,6 @@
 /public/assets*
 /tmp
-.env
-.env.*
+/.env
+/.env.*
+node_modules
+log

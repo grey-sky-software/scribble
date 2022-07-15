@@ -1,6 +1,8 @@
 # Scribble
 
-Use me to take notes.
+<br>
+
+I help you stay organized.
 
 <br>
 
@@ -10,98 +12,108 @@ Use me to take notes.
 
 ## Setup
 
-Make sure you have Ruby `2.7.5` installed (you can also use RVM):
-```
-% rvm use
-```
+<br>
 
-Install the required dependencies:
-```
-% bundle install
-```
+The application is developed and deployed using Docker containers.  
+While using the Docker container for development is not required, it is highly recommended in order to keep development done within a consistent environment.
+
+<br>
 
 ### Environment Variables
 
-The app requires certain environment variables in order to function.
+<br>
 
-Create a `.env` file (which will not be checked into version control) and fill out the following values:
+The app depends on various environment variables at different stages.
+
+When running locally, these variables are contained in the `docker/.env.development` file for the development environment and `docker/.env.test` for the test environment.
+
+- `DATABASE_URL` - defines the URL that should be used to connect to the database. required.
+- `SMTP_HOST` - defines the host of the SMTP e-mail service used to allow the app to send e-mails. required if using e-mail.
+- `SMTP_PORT` - defines the port of the SMTP e-mail service used to allow the app to send e-mails. required if using e-mail.
+- `WEB_SESSIONS_SECRET` - secret used to encrypt session cookies. required if using session cookies. 
+
+<br>
+
+## Initialization
+
+<br>
+
+The application can be initialized with
 ```
-DATABASE_URL=postgres://<username>:<password>@<host>:<port>/<database>
+make init
 ```
 
 <br>
 
-## Database Management
-
-Running pending migrations (overwrites `schema.sql`):
-```
-% bundle exec rake db:migrate
-```
-
-Re-create the database from scratch and run any pending migrations (overwrites `schema.sql`):
-```
-% bundle exec rake db:prepare
-```
-
-Re-create the database from scratch without running any pending migrations (loads from `schema.sql`):
-```
-% bundle exec rake db:reset
-```
-
-Load the schema into an existing database:
-```
-% bundle exec rake db:load
-```
-
-Prepare (create and migrate) DB for `development` and `test` environments:
-```
-% HANAMI_ENV=test bundle exec rake db:prepare
-```
-
-<br>
-
-## Dev Console
-
-Run the development console:
-```
-% bundle exec hanami console
-```
+This command
+1. creates a Docker image using the Ruby version defined in `.ruby-version`
+2. installs `bundler` and all dependencies needed by the app as defined in the `Gemfile`
+3. initializes the development and test databases as defined by the `DATABASE_URL` environment variables
 
 <br>
 
 ## Dev Server
 
-Run the development server:
+<br>
+
+After initializing the Docker image, you can start the container and development server with
 ```
-% bundle exec hanami server
+make start
+```
+This will start the development server at `http://localhost:2300`.
+
+<br>
+
+## Dev Console
+
+<br>
+
+To start up a developer console, you must first enter the running container with
+```
+make shell
 ```
 
-This will load the server at [http://localhost:2300](http://localhost:2300)
+<br>
+
+Once in the container, you can start the development console with
+```
+bundle exec hanami console
+```
 
 <br>
 
 ## Linting
 
-Running all linters:
+<br>
+
+You can run the linter with
 ```
-% bundle exec rake lint
+make lint
 ```
 
-Running just the style linter:
-```
-% bundle exec rake lint:style
-```
+<br>
 
-Running just the code smell linter:
+This will lint all of the files in the application.  
+If you want to lint specific files, you can pass them as an argument to the lint command
 ```
-% bundle exec rake lint:smell
+make lint apps/web/controllers/dashboard/index.rb
 ```
 
 <br>
 
 ## Testing
 
-How to run tests:
+<br>
+
+You can run the specs with
 ```
-% bundle exec rake
+make test
+```
+
+<br>
+
+This will run all of the specs for the application.  
+If you want to run specific specs, you can pass them as an argument to the test command
+```
+make test spec/web/controllers/dashboard/index_spec.rb
 ```

@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 14.3 (Ubuntu 14.3-1.pgdg20.04+1)
--- Dumped by pg_dump version 14.3 (Ubuntu 14.3-1.pgdg20.04+1)
+-- Dumped from database version 14.3
+-- Dumped by pg_dump version 14.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -16,15 +16,15 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
-DROP DATABASE IF EXISTS scribble;
+DROP DATABASE IF EXISTS postgres;
 --
--- Name: scribble; Type: DATABASE; Schema: -; Owner: -
+-- Name: postgres; Type: DATABASE; Schema: -; Owner: -
 --
 
-CREATE DATABASE scribble WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'en_US.UTF-8';
+CREATE DATABASE postgres WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE = 'en_US.utf8';
 
 
-\connect scribble
+\connect postgres
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -36,6 +36,13 @@ SET check_function_bodies = false;
 SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
+
+--
+-- Name: DATABASE postgres; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON DATABASE postgres IS 'default administrative connection database';
+
 
 --
 -- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: -

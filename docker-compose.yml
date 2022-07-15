@@ -1,0 +1,54 @@
+---
+# Docker Compose 2.4 is for local development
+# https://www.heroku.com/podcasts/codeish/57-discussing-docker-containers-and-kubernetes-with-a-docker-captain - Source on that.
+version: '2.4'
+
+x-app: &app
+  image: scribble:latest
+  mem_limit: 512m
+  build:
+    context: .
+    dockerfile: Dockerfile
+  tmpfs:
+    - /tmp
+  volumes:
+    - .:/usr/src/app:cached
+    - bundler:/usr/local/bundle:delegated
+    - node_modules:/usr/src/app/node_modules:delegated
+  depends_on:
+    postgres:
+      condition: service_healthy
+
+services:
+  postgres:
+    image: postgres:14.3-alpine
+    mem_limit: 64m
+    volumes:
+      - ./log:/root/log:cached
+      - postgresql:/var/lib/postgresql/data:delegated
+    ports:
+      - "${HANAMI_HOST:-0.0.0.0}:5432:5432"
+    environment:
+      PSQL_HISTFILE: /root/log/.psql_history
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 2s
+      retries: 10
+    logging:
+      driver: "json-file"
+
+  web:
+    <<: *app
+    command: bash -c "rm -rf /usr/src/app/tmp/pids/server.pid && bundle exec hanami server --host=${HANAMI_HOST:-0.0.0.0} --port=${PORT:-2300}"
+    ports:
+      - "${HANAMI_HOST:-0.0.0.0}:${PORT:-2300}:${PORT:-2300}"
+    env_file: docker/.env.development
+
+volumes:
+  postgresql:
+  bundler:
+  node_modules:

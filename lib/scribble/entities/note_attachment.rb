@@ -11,7 +11,8 @@ class NoteAttachment < Hanami::Entity
   # Allows us to call repository methods for an instance of the entity on an
   # instance of the entity, such as `NoteAttachment.find(1).update(...)`.
   def method_missing(method, *args, &block)
-    return hashed[method.to_sym] if hashed.key?(method.to_sym)
+    method_sym = method.to_sym
+    return hashed[method_sym] if hashed.key?(method_sym)
     NoteAttachmentRepository.send(method, id, *args, &block)
   end
 
@@ -26,6 +27,6 @@ class NoteAttachment < Hanami::Entity
   # @return [Hash]
   #   The current {NoteAttachment} converted to a {Hash} for accessing its attributes.
   def hashed
-    self.to_h
+    to_h
   end
 end

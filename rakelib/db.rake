@@ -11,11 +11,11 @@ namespace :db do
 
   desc 'Run any pending migrations on the database and dump the schema'
   task :migrate do
-    # The schema.sql file seems to not get updated when you make changes to a migration, so
+    # The schema.sql file does not get updated when you make changes to a migration, so
     # I've found the safest thing is to just delete it and re-create it. I'm sure there's a
     # better way we can find.
     File.delete(SCHEMA_FILE_PATH) if File.exist?(SCHEMA_FILE_PATH)
-    system('bundle exec hanami db migrate')
+    system('bundle exec rake db:migrate:safe')
     system('pg_dump -s --no-owner --no-privileges --if-exists --clean '\
            "--create --encoding=UTF8 #{ENV.fetch('DATABASE_URL')} > db/schema.sql")
 
@@ -28,11 +28,27 @@ namespace :db do
     f.close
   end
 
-  desc 'Prepares the database for use by dropping the current database, '\
-       're-creating it, loading the schema.sql, and running any migrations'
+  namespace :migrate do
+    desc 'Run any pending migrations on the database without updating the schema file'
+    task :safe do
+      system("echo DATABASE_URL = #{ENV.fetch('DATABASE_URL')}")
+      system('bundle exec hanami db migrate')
+    end
+  end
+
+  desc 'Prepares the database for use by creating it, loading the schema.sql, '\
+       'and safely running any migrations'
   task :prepare do
-    system('bundle exec rake db:reset')
-    system('bundle exec rake db:migrate')
+    system('bundle exec hanami db prepare')
+  end
+
+  namespace :prepare do
+    desc 'Prepares the database for use by dropping the current database, '\
+         're-creating it, loading the schema.sql, and running any migrations'
+    task :full do
+      system('bundle exec rake db:reset')
+      system('bundle exec rake db:migrate')
+    end
   end
 
   desc 'Resets the database by dropping the current database, '\
@@ -41,5 +57,11 @@ namespace :db do
     system('bundle exec hanami db drop')
     system('bundle exec hanami db create')
     system('bundle exec rake db:load')
+  end
+
+  namespace :test do
+    task :prepare do
+      system('HANAMI_ENV=test bundle exec hanami db prepare')
+    end
   end
 end
