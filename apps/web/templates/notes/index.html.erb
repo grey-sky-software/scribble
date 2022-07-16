@@ -13,7 +13,7 @@
     <ul>
     <% notes.each do |note| %>
       <li>
-        <%= note.body %> (<span style='color: green;'><%= note.created_at.strftime('%Y-%m-%d %H:%M %p') %></span>)
+        [<a href='/notes/<%= note.id %>'><%= note.id %></a>] <%= note.body %> (<span style='color: green;'><%= note.created_at.strftime('%Y-%m-%d %H:%M %p') %></span>)
       </li>
     <% end %>
     </ul>

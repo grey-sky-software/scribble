@@ -1,4 +1,4 @@
-RSpec.describe Web::Controllers::Notes::Create, type: :action do
+RSpec.describe Web::Controllers::Notes::Show, type: :action do
   let(:action) { described_class.new }
   let(:params) { Hash[] }
 

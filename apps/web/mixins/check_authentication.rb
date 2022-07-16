@@ -12,7 +12,7 @@ module CheckAuthentication
   #   The currently authenticated user, if there is an authenticated user.
   def current_user
     return nil unless authenticated?
-    # @todo
+    # @TODO
     #   Find the user based on the token provided
     #   (or whatever the auth implementation we decide on uses)
     User.first
